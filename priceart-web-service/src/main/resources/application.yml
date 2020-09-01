@@ -1,0 +1,32 @@
+# ==============================================================
+# = PriceArt Web Service Base
+# ==============================================================
+
+server:
+  port: 5001
+ 
+spring:
+  profiles:
+    active: list1
+  application:
+    name: PriceArtService
+# ==============================================================
+# = DBMS PostgreSQL Parameters
+# ==============================================================
+  datasource:
+    initialization-mode: always
+    password: Alex1993!
+    platform: postgres
+    url: jdbc:postgresql://localhost:5433/Alphashop
+    username: postgres
+  jpa:
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+        jdbc:
+          lob:
+            non_contextual_creation: true
+    show-sql: true
+
