@@ -89,7 +89,7 @@ public class ArticoliController<T> {
 		logger.info("****** Lista di libri filtrata per " + filter + "!");
 //		String AuthHeader = httpRequest.getHeader("Authorization");
 		
-		List<Object> listaLibri = (List<Object>) articoliServiceGeneral.SelectByRedazione(filter);
+		List<Object> listaLibri = articoliServiceGeneral.SelectByRedazione(filter);
 		
 		if (listaLibri.size() == 0) {
 			String ErrMsg = String.format("Non è stato trovato alcun libro con filtro %s", filter);

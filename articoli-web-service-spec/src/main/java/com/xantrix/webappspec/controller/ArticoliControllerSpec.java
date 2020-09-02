@@ -5,6 +5,7 @@ import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -27,9 +28,11 @@ public class ArticoliControllerSpec<T> extends ArticoliController<ArticoliSpec> 
 	@GetMapping(value = "/cerca/libri/{redazione}", produces = "application/json")
 	public ResponseEntity<List<ArticoliSpec>> getLibriByRedazione(@PathVariable("redazione") String redazione, HttpServletRequest httpRequest) throws NotFoundException {
 		
+		@SuppressWarnings("unchecked")
 		List<ArticoliSpec> listaLibri = (List<ArticoliSpec>) this.getLibriByRedazioneTipoContenuto(redazione, httpRequest);
+				
 		
-		return null;
+		return new ResponseEntity<List<ArticoliSpec>>(listaLibri, HttpStatus.OK);
 		
 		
 		
