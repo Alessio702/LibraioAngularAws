@@ -4,10 +4,7 @@ import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -19,7 +16,7 @@ import com.xantrix.webappspec.service.ArticoliServiceSpec;
 
 public class ArticoliControllerSpec extends ArticoliController<ArticoliSpec> {
 	
-	private static final Logger logger = LoggerFactory.getLogger(ArticoliController.class);
+//	private static final Logger logger = LoggerFactory.getLogger(ArticoliController.class);
 	
 	public ArticoliControllerSpec(ArticoliSpec tipoArticolo) {
 		super(tipoArticolo);
@@ -29,22 +26,36 @@ public class ArticoliControllerSpec extends ArticoliController<ArticoliSpec> {
 	ArticoliServiceSpec articoliServiceSpec;
 	
 	// ricerca libri
-	@GetMapping(value = "/cerca/libri/{redazione}", produces = "application/json")
-	public ResponseEntity<List<ArticoliSpec>> getLibriByRedazione(@PathVariable("redazione") String redazione, HttpServletRequest httpRequest) throws NotFoundException {
+	@GetMapping(value = "/cerca/libri/{redazione}/{tipoContenuto}", produces = "application/json")
+	public ResponseEntity<List<ArticoliSpec>> getLibriByRedazione(@PathVariable("redazione") String redazione, @PathVariable("tipoContenuto") Object tipoContenuto, HttpServletRequest httpRequest) throws NotFoundException {
 		
-		logger.info("****** Otteniamo i libri con redazione: " + redazione + " *******");
+//		List<T> libri = articoliServiceSpec.getLibriByRedazione(redazione);
+		
+//		this.getLibriByRedazioneTipoContenuto(libri, tipoContenuto, httpRequest);
+		
+		
+		return null;
+		
+		
+		
+		
+		
+		
+		
+		
+//		logger.info("****** Otteniamo i libri con redazione: " + redazione + " *******");
 //		String AuthHeader = httpRequest.getHeader("Authorization");
+//		
+//		List<ArticoliSpec> libri = articoliServiceSpec.getLibriByRedazione(redazione);
+//		
+//		if (libri.size() == 0) {
+//			String ErrMsg = String.format("Non è stato trovato alcun libro avente redazione %s", redazione);
+//			logger.warn(ErrMsg);
+//			throw new NotFoundException(ErrMsg);
+//		} else {
+//			
+//		}
 		
-		List<ArticoliSpec> libri = articoliServiceSpec.getLibriByRedazione(redazione);
-		
-		if (libri.size() == 0) {
-			String ErrMsg = String.format("Non è stato trovato alcun libro avente redazione %s", redazione);
-			logger.warn(ErrMsg);
-			throw new NotFoundException(ErrMsg);
-		} else {
-			
-		}
-		
-		return new ResponseEntity<List<ArticoliSpec>>(libri, HttpStatus.OK);
+//		return new ResponseEntity<List<ArticoliSpec>>(libri, HttpStatus.OK);
 	}
 }

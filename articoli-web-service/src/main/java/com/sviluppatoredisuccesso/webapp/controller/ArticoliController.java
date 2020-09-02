@@ -20,6 +20,7 @@ import com.sviluppatoredisuccesso.webapp.entities.Articoli;
 import com.sviluppatoredisuccesso.webapp.exception.NotFoundException;
 import com.sviluppatoredisuccesso.webapp.service.ArticoliService;
 
+
 @RestController
 @CrossOrigin
 @RequestMapping("api/articoli")
@@ -33,7 +34,6 @@ public class ArticoliController<T> {
 	
 	@Autowired
 	private ArticoliService articoliService;
-
 
 	@Autowired
 	private PriceClient priceClient;
@@ -73,9 +73,6 @@ public class ArticoliController<T> {
 		return new ResponseEntity<List<Articoli>>(articoli, HttpStatus.OK);
 	}
 	
-	
-	
-	
 	private Double getPriceArt(String CodArt, String IdList, String Header) {
 
 		Double Prezzo = (IdList.length() > 0) ? priceClient.getPriceArt(Header, CodArt, IdList) : priceClient.getDefPriceArt(Header, CodArt);
@@ -85,8 +82,15 @@ public class ArticoliController<T> {
 	
 	
 	
-	
-	
+	public List<T> getLibriByRedazioneTipoContenuto(List<T> libri, T tipoContenuto, HttpServletRequest httpRequest) throws NotFoundException {
+		
+		logger.info("****** Ci sono " + libri.size() + " libri!");
+		String AuthHeader = httpRequest.getHeader("Authorization");
+		
+//		if (T instanceof Articol)
+		
+		return null;
+	}
 	
 	
 	
