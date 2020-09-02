@@ -14,9 +14,7 @@ import com.sviluppatoredisuccesso.webapp.exception.NotFoundException;
 import com.xantrix.webappspec.entities.ArticoliSpec;
 import com.xantrix.webappspec.service.ArticoliServiceSpec;
 
-public class ArticoliControllerSpec extends ArticoliController<ArticoliSpec> {
-	
-//	private static final Logger logger = LoggerFactory.getLogger(ArticoliController.class);
+public class ArticoliControllerSpec<T> extends ArticoliController<ArticoliSpec> {
 	
 	public ArticoliControllerSpec(ArticoliSpec tipoArticolo) {
 		super(tipoArticolo);
@@ -26,13 +24,10 @@ public class ArticoliControllerSpec extends ArticoliController<ArticoliSpec> {
 	ArticoliServiceSpec articoliServiceSpec;
 	
 	// ricerca libri
-	@GetMapping(value = "/cerca/libri/{redazione}/{tipoContenuto}", produces = "application/json")
-	public ResponseEntity<List<ArticoliSpec>> getLibriByRedazione(@PathVariable("redazione") String redazione, @PathVariable("tipoContenuto") Object tipoContenuto, HttpServletRequest httpRequest) throws NotFoundException {
+	@GetMapping(value = "/cerca/libri/{redazione}", produces = "application/json")
+	public ResponseEntity<List<ArticoliSpec>> getLibriByRedazione(@PathVariable("redazione") String redazione, HttpServletRequest httpRequest) throws NotFoundException {
 		
-//		List<T> libri = articoliServiceSpec.getLibriByRedazione(redazione);
-		
-//		this.getLibriByRedazioneTipoContenuto(libri, tipoContenuto, httpRequest);
-		
+		List<ArticoliSpec> listaLibri = (List<ArticoliSpec>) this.getLibriByRedazioneTipoContenuto(redazione, httpRequest);
 		
 		return null;
 		

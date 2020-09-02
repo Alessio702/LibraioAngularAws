@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.sviluppatoredisuccesso.webapp.entities.Articoli;
 import com.sviluppatoredisuccesso.webapp.exception.NotFoundException;
 import com.sviluppatoredisuccesso.webapp.service.ArticoliService;
+import com.sviluppatoredisuccesso.webapp.service.ArticoliServiceGeneral;
 
 
 @RestController
@@ -27,6 +28,7 @@ import com.sviluppatoredisuccesso.webapp.service.ArticoliService;
 public class ArticoliController<T> {
 	private static final Logger logger = LoggerFactory.getLogger(ArticoliController.class);
 	
+	@SuppressWarnings("unused")
 	private T tipoArticolo;	
 	public ArticoliController(T tipoArticolo) {
 		this.tipoArticolo = tipoArticolo;
@@ -34,6 +36,9 @@ public class ArticoliController<T> {
 	
 	@Autowired
 	private ArticoliService articoliService;
+	
+	@Autowired
+	private ArticoliServiceGeneral articoliServiceGeneral;
 
 	@Autowired
 	private PriceClient priceClient;
@@ -54,9 +59,6 @@ public class ArticoliController<T> {
 		return new ResponseEntity<Articoli>(articolo, HttpStatus.OK);
 	}
 
-	
-	
-	
 	// ------------------- Ricerca Per Descrizione ------------------------------------
 	@GetMapping(value = "/cerca/descrizione/{filter}", produces = "application/json")
 	public ResponseEntity<List<Articoli>> listArtByDesc(@PathVariable("filter") String Filter, HttpServletRequest httpRequest) throws NotFoundException {
@@ -82,14 +84,23 @@ public class ArticoliController<T> {
 	
 	
 	
-	public List<T> getLibriByRedazioneTipoContenuto(List<T> libri, T tipoContenuto, HttpServletRequest httpRequest) throws NotFoundException {
+	public List<?> getLibriByRedazioneTipoContenuto(String filter, HttpServletRequest httpRequest) throws NotFoundException {
 		
-		logger.info("****** Ci sono " + libri.size() + " libri!");
-		String AuthHeader = httpRequest.getHeader("Authorization");
+		logger.info("****** Lista di libri filtrata per " + filter + "!");
+//		String AuthHeader = httpRequest.getHeader("Authorization");
 		
-//		if (T instanceof Articol)
+		List<Object> listaLibri = (List<Object>) articoliServiceGeneral.SelectByRedazione(filter);
 		
-		return null;
+		if (listaLibri.size() == 0) {
+			String ErrMsg = String.format("Non è stato trovato alcun libro con filtro %s", filter);
+			logger.warn(ErrMsg);
+			throw new NotFoundException(ErrMsg);
+			
+			
+		} else {
+			return listaLibri;
+		}
+		
 	}
 	
 	
