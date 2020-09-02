@@ -2,13 +2,13 @@ package com.sviluppatoredisuccesso.webapp.service;
 
 import java.util.List;
 
-public interface ArticoliServiceGeneral 
+public interface ArticoliServiceGeneral<E> 
 {
 	
 	
 	public List<Object> SelectByRedazione(String redazione);
 	
-	public Object SelectByFilter(String filter);
+	public List<E> SelectByFilter(E tipoOggetto, String filter);
 	
 	
 //	public Iterable<T> SelTutti();

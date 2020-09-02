@@ -10,19 +10,20 @@ import com.sviluppatoredisuccesso.webapp.repository.ArticoliRepository;
 
 @Service
 @Transactional(readOnly = true)
-public class ArticoliServiceGeneralImpl implements ArticoliServiceGeneral
+public class ArticoliServiceGeneralImpl<E> implements ArticoliServiceGeneral<E>
 {
 	@Autowired
-	ArticoliRepository articoliRepository;
+	ArticoliRepository<E> articoliRepository;
 
 	@Override
 	public List<Object> SelectByRedazione(String redazione) {
-		return articoliRepository.SelByRedazioneLike(redazione);
+//		return articoliRepository.SelByRedazioneLike(redazione);
+		return null;
 	}
 
 	@Override
-	public Object SelectByFilter(String filter) {
-		return null;
+	public List<E> SelectByFilter(E tipoOggetto, String filter) {
+		return articoliRepository.selectByTypeAndFilter(tipoOggetto, filter);
 	}
 	
 

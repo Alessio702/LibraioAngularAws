@@ -25,12 +25,12 @@ import com.sviluppatoredisuccesso.webapp.service.ArticoliServiceGeneral;
 @RestController
 @CrossOrigin
 @RequestMapping("api/articoli")
-public class ArticoliController<T> {
+public class ArticoliController<E> {
 	private static final Logger logger = LoggerFactory.getLogger(ArticoliController.class);
 	
 	@SuppressWarnings("unused")
-	private T tipoArticolo;	
-	public ArticoliController(T tipoArticolo) {
+	private E tipoArticolo;	
+	public ArticoliController(E tipoArticolo) {
 		this.tipoArticolo = tipoArticolo;
 	}
 	
@@ -38,7 +38,7 @@ public class ArticoliController<T> {
 	private ArticoliService articoliService;
 	
 	@Autowired
-	private ArticoliServiceGeneral articoliServiceGeneral;
+	private ArticoliServiceGeneral<E> articoliServiceGeneral;
 
 	@Autowired
 	private PriceClient priceClient;
@@ -83,22 +83,22 @@ public class ArticoliController<T> {
 	}
 	
 	
-	
-	public List<?> getLibriByRedazioneTipoContenuto(String filter, HttpServletRequest httpRequest) throws NotFoundException {
+	// ricerca libri
+	@GetMapping(value = "/cerca/{tipoOggetto}/{filter}", produces = "application/json")
+	public ResponseEntity<List<E>> genericSearchByTypeAndFilter(@PathVariable("tipoOggetto") E tipoOggetto, @PathVariable("filter") String filter) throws NotFoundException {
 		
-		logger.info("****** Lista di libri filtrata per " + filter + "!");
-//		String AuthHeader = httpRequest.getHeader("Authorization");
+		logger.info("****** ricerca di " + tipoOggetto + " filtrata per " + filter + "!");
 		
-		List<Object> listaLibri = articoliServiceGeneral.SelectByRedazione(filter);
+		List<E> searchList = articoliServiceGeneral.SelectByFilter(tipoOggetto, filter);
 		
-		if (listaLibri.size() == 0) {
-			String ErrMsg = String.format("Non è stato trovato alcun libro con filtro %s", filter);
+		if (searchList.size() == 0) {
+			String ErrMsg = String.format("Non è stato trovato alcun oggetto " + tipoOggetto + " con filtro %s", filter);
 			logger.warn(ErrMsg);
 			throw new NotFoundException(ErrMsg);
 			
 			
 		} else {
-			return listaLibri;
+			return new ResponseEntity<List<E>>(searchList, HttpStatus.OK);
 		}
 		
 	}

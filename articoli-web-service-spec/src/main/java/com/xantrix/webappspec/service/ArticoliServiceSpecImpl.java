@@ -8,11 +8,11 @@ import com.sviluppatoredisuccesso.webapp.service.ArticoliServiceImpl;
 import com.xantrix.webappspec.entities.ArticoliSpec;
 import com.xantrix.webappspec.repository.ArticoliRepositorySpec;
 
-public class ArticoliServiceSpecImpl extends ArticoliServiceImpl implements ArticoliServiceSpec
+public class ArticoliServiceSpecImpl<T> extends ArticoliServiceImpl<T> implements ArticoliServiceSpec
 {
 
 	@Autowired
-	ArticoliRepositorySpec articoliRepositorySpec;
+	ArticoliRepositorySpec<T> articoliRepositorySpec;
 	
 	@Override
 	public List<ArticoliSpec> getLibriByRedazione(String redazione) {

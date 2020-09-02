@@ -11,10 +11,10 @@ import com.sviluppatoredisuccesso.webapp.repository.ArticoliRepository;
 
 @Service
 @Transactional(readOnly = true)
-public class ArticoliServiceImpl implements ArticoliService
+public class ArticoliServiceImpl<E> implements ArticoliService
 {
 	@Autowired
-	ArticoliRepository articoliRepository;
+	ArticoliRepository<E> articoliRepository;
 	
 
 	@Override
