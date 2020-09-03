@@ -11,52 +11,26 @@ import com.sviluppatoredisuccesso.webapp.repository.ArticoliRepository;
 
 @Service
 @Transactional(readOnly = true)
-public class ArticoliServiceImpl<E> implements ArticoliService
+public class ArticoliServiceImpl<E> implements ArticoliService<E>
 {
 	@Autowired
 	ArticoliRepository<E> articoliRepository;
-	
 
 	@Override
-	public List<Articoli> SelByDescrizione(String descrizione)
-	{
-		return articoliRepository.SelByDescrizioneLike(descrizione);
-	}
-	
-	@Override
-	public Articoli SelByCodArt(String codArt)
-	{
+	public Articoli selectByCodArt(String codArt) {
 		return articoliRepository.findByCodArt(codArt);
 	}
 
+	@Override
+	public List<E> selectByFilter(E oggetto, String filter) {
+		return articoliRepository.selectByObjectAndFilter(oggetto, filter);
+	}
+
+	@Override
+	public List<Articoli> selectByDescrizione(String descrizione) {
+		return articoliRepository.SelByDescrizioneLike(descrizione);
+	}
 	
+
 	
-	
-	
-	
-//	@Override
-//	public Iterable<Articoli> SelTutti()
-//	{
-//		return articoliRepository.findAll();
-//	}
-	
-//	@Override
-//	public List<Articoli> SelByDescrizione(String descrizione, Pageable pageable)
-//	{
-//		return articoliRepository.findByDescrizioneLike(descrizione, pageable);
-//	}
-//
-//	@Override
-//	@Transactional
-//	public void DelArticolo(Articoli articolo)
-//	{
-//		articoliRepository.delete(articolo);
-//	}
-//
-//	@Override
-//	@Transactional
-//	public void InsArticolo(Articoli articolo)
-//	{
-//		articoliRepository.save(articolo);
-//	}
 }

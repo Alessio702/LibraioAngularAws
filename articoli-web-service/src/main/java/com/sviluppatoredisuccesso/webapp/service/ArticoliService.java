@@ -4,20 +4,20 @@ import java.util.List;
 
 import com.sviluppatoredisuccesso.webapp.entities.Articoli;
 
-public interface ArticoliService 
+public interface ArticoliService<E>
 {
+	public List<Articoli> selectByDescrizione(String descrizione);
+	
+	public Articoli selectByCodArt(String codArt);
+	
+	public List<E> selectByFilter(E oggetto, String filter);
 	
 	
-	public List<Articoli> SelByDescrizione(String descrizione);
+//	public Iterable<T> SelTutti();
 	
-	public Articoli SelByCodArt(String codArt);
+//	public List<T> SelByDescrizione(String descrizione, Pageable pageable);
 	
-	
-//	public Iterable<Articoli> SelTutti();
-	
-//	public List<Articoli> SelByDescrizione(String descrizione, Pageable pageable);
-	
-//	public void DelArticolo(Articoli articolo);
+//	public void DelArticolo(T articolo);
 //	
-//	public void InsArticolo(Articoli articolo);
+//	public void InsArticolo(T articolo);
 }

@@ -1,6 +1,5 @@
 package com.sviluppatoredisuccesso.webapp.controller;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -19,7 +18,6 @@ import org.springframework.web.bind.annotation.RestController;
 import com.sviluppatoredisuccesso.webapp.entities.Articoli;
 import com.sviluppatoredisuccesso.webapp.exception.NotFoundException;
 import com.sviluppatoredisuccesso.webapp.service.ArticoliService;
-import com.sviluppatoredisuccesso.webapp.service.ArticoliServiceGeneral;
 
 @RestController
 @CrossOrigin
@@ -34,10 +32,7 @@ public class ArticoliController<E> {
 	}
 	
 	@Autowired
-	private ArticoliService articoliService;
-	
-	@Autowired
-	private ArticoliServiceGeneral<E> articoliServiceGeneral;
+	private ArticoliService<E> articoliService;
 
 	@Autowired
 	private PriceClient priceClient;
@@ -48,7 +43,7 @@ public class ArticoliController<E> {
 		
 		logger.info("****** Otteniamo l'articolo con codice " + CodArt + " *******");
 		String AuthHeader = httpRequest.getHeader("Authorization");
-		Articoli articolo = articoliService.SelByCodArt(CodArt);
+		Articoli articolo = articoliService.selectByCodArt(CodArt);
 		if (articolo == null) {
 			String ErrMsg = String.format("L'articolo con codice %s non è stato trovato!", CodArt);
 			logger.warn(ErrMsg);
@@ -64,7 +59,7 @@ public class ArticoliController<E> {
 		
 		logger.info("****** Otteniamo gli articoli con Descrizione: " + Filter + " *******");
 		String AuthHeader = httpRequest.getHeader("Authorization");
-		List<Articoli> articoli = articoliService.SelByDescrizione(Filter.toUpperCase() + "%");
+		List<Articoli> articoli = articoliService.selectByDescrizione(Filter.toUpperCase() + "%");
 		if (articoli == null) {
 			String ErrMsg = String.format("Non è stato trovato alcun articolo avente descrizione %s", Filter);
 			logger.warn(ErrMsg);
@@ -83,30 +78,49 @@ public class ArticoliController<E> {
 	
 	
 	// ricerca libri
-	@GetMapping(value = "/cerca/{tipoOggetto}/{filter}", produces = "application/json")
-	public ResponseEntity<List<E>> genericSearchByTypeAndFilter(@PathVariable("tipoOggetto") E tipoOggetto, @PathVariable("filter") String filter) throws NotFoundException {
+//	@GetMapping(value = "/cerca/{oggetto}/{filter}", produces = "application/json")
+//	public ResponseEntity<List<E>> genericSearchByTypeAndFilter(@PathVariable("oggetto") E oggetto, @PathVariable("filter") String filter) throws NotFoundException {
+//		
+//		logger.info("****** ricerca di " + oggetto + " filtrata per " + filter + "!");
+//		
+//		List<E> searchList = new ArrayList<E>();
+//		
+//		
+////		if (oggetto instanceof ArticoliSpec) {
+////			E articoliSpec = (E) oggetto;
+////			searchList = articoliServiceGeneral.SelectByFilter(articoliSpec, filter);
+////		}
+//		
+//		
+//		
+//		if (searchList.size() == 0) {
+//			String ErrMsg = String.format("Non è stato trovato alcun oggetto " + oggetto + " con filtro %s", filter);
+//			logger.warn(ErrMsg);
+//			throw new NotFoundException(ErrMsg);		
+//		} else {
+//			return new ResponseEntity<List<E>>(searchList, HttpStatus.OK);
+//		}
+//		
+//	}
+	
+	@GetMapping(value = "/cerca/{oggetto}/{filter}", produces = "application/json")
+	public ResponseEntity<List<E>> genericSearchByTypeAndFilter(@PathVariable("oggetto") E oggetto, @PathVariable("filter") String filter) throws NotFoundException {
 		
-		logger.info("****** ricerca di " + tipoOggetto + " filtrata per " + filter + "!");
+		logger.info("****** ricerca di " + oggetto + " filtrata per " + filter + "!");
 		
-		List<E> searchList = new ArrayList<E>();
+		List<E> searchList = articoliService.selectByFilter(oggetto, filter);
 		
-		if (tipoOggetto instanceof Articoli) {
-			E articoli = (E) tipoOggetto;
-			searchList = articoliServiceGeneral.SelectByFilter(articoli, filter);
-		}
-		
-//		if (tipoOggetto instanceof ArticoliSpec) {
-//			E articoliSpec = (E) tipoOggetto;
+//		if (oggetto instanceof ArticoliSpec) {
+//			E articoliSpec = (E) oggetto;
 //			searchList = articoliServiceGeneral.SelectByFilter(articoliSpec, filter);
 //		}
 		
 		
+		
 		if (searchList.size() == 0) {
-			String ErrMsg = String.format("Non è stato trovato alcun oggetto " + tipoOggetto + " con filtro %s", filter);
+			String ErrMsg = String.format("Non è stato trovato alcun oggetto con filtro %s", filter);
 			logger.warn(ErrMsg);
-			throw new NotFoundException(ErrMsg);
-			
-			
+			throw new NotFoundException(ErrMsg);		
 		} else {
 			return new ResponseEntity<List<E>>(searchList, HttpStatus.OK);
 		}

@@ -16,8 +16,10 @@ public interface ArticoliRepository<E>  extends PagingAndSortingRepository<Artic
 	Articoli findByCodArt(String codArt);
 
 	
-	@Query(value = "SELECT * FROM " + /* E + */ " WHERE " + /* filter + */ " LIKE :filter", nativeQuery = true)
-	List<E> selectByTypeAndFilter(@Param("tipoOggetto") E tipoOggetto, @Param("filter") String filter);
+	
+	@Query(value = "SELECT c FROM ?1 c WHERE c.DESCRIZIONE = ?2")
+	List<E> selectByObjectAndFilter(E oggetto, String filter);
+	
 	
 	
 //	@Query(value = "SELECT * FROM LIBRO WHERE " + filter + " LIKE :filter", nativeQuery = true)
