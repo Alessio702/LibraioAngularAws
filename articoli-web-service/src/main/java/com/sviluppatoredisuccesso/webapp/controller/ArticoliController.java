@@ -1,5 +1,6 @@
 package com.sviluppatoredisuccesso.webapp.controller;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -10,7 +11,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
-//import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -20,7 +20,6 @@ import com.sviluppatoredisuccesso.webapp.entities.Articoli;
 import com.sviluppatoredisuccesso.webapp.exception.NotFoundException;
 import com.sviluppatoredisuccesso.webapp.service.ArticoliService;
 import com.sviluppatoredisuccesso.webapp.service.ArticoliServiceGeneral;
-
 
 @RestController
 @CrossOrigin
@@ -89,7 +88,18 @@ public class ArticoliController<E> {
 		
 		logger.info("****** ricerca di " + tipoOggetto + " filtrata per " + filter + "!");
 		
-		List<E> searchList = articoliServiceGeneral.SelectByFilter(tipoOggetto, filter);
+		List<E> searchList = new ArrayList<E>();
+		
+		if (tipoOggetto instanceof Articoli) {
+			E articoli = (E) tipoOggetto;
+			searchList = articoliServiceGeneral.SelectByFilter(articoli, filter);
+		}
+		
+//		if (tipoOggetto instanceof ArticoliSpec) {
+//			E articoliSpec = (E) tipoOggetto;
+//			searchList = articoliServiceGeneral.SelectByFilter(articoliSpec, filter);
+//		}
+		
 		
 		if (searchList.size() == 0) {
 			String ErrMsg = String.format("Non è stato trovato alcun oggetto " + tipoOggetto + " con filtro %s", filter);
