@@ -17,8 +17,8 @@ public interface ArticoliRepository<E>  extends PagingAndSortingRepository<Artic
 
 	
 	
-	@Query(value = "SELECT c FROM ?1 c WHERE c.DESCRIZIONE = ?2")
-	List<E> selectByObjectAndFilter(E oggetto, String filter);
+	@Query(value = "SELECT c FROM :oggetto c WHERE c.DESCRIZIONE = :filter")
+	List<E> selectByObjectAndFilter(@Param("oggetto") String oggetto, @Param("filter") String filter);
 	
 	
 	

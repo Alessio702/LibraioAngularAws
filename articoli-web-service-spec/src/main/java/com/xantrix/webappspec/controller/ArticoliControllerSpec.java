@@ -5,10 +5,7 @@ import com.xantrix.webappspec.entities.ArticoliSpec;
 
 public class ArticoliControllerSpec extends ArticoliController<ArticoliSpec> {
 	
-	public ArticoliControllerSpec(ArticoliSpec tipoArticolo) {
-		super(tipoArticolo);
-		// TODO Auto-generated constructor stub
-	}
+	
 
 //	@Autowired
 //	ArticoliServiceSpec<E> articoliServiceSpec;

@@ -10,7 +10,7 @@ public interface ArticoliService<E>
 	
 	public Articoli selectByCodArt(String codArt);
 	
-	public List<E> selectByFilter(E oggetto, String filter);
+	public List<E> selectByFilter(String oggetto, String filter);
 	
 	
 //	public Iterable<T> SelTutti();
