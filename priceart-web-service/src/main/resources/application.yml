@@ -3,7 +3,7 @@
 # ==============================================================
 
 server:
-  port: 5001
+  port: 5003
  
 spring:
   profiles:
@@ -15,9 +15,9 @@ spring:
 # ==============================================================
   datasource:
     initialization-mode: always
-    password: Alex1993!
+    password: 07139
     platform: postgres
-    url: jdbc:postgresql://localhost:5433/Alphashop
+    url: jdbc:postgresql://localhost:5000/postgres
     username: postgres
   jpa:
     hibernate:

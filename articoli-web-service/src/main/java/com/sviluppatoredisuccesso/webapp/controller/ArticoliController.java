@@ -25,7 +25,7 @@ import com.sviluppatoredisuccesso.webapp.service.ArticoliService;
 public class ArticoliController<E> {
 	private static final Logger logger = LoggerFactory.getLogger(ArticoliController.class);
 
-	@SuppressWarnings("unused")
+//	@SuppressWarnings("unused")
 	private E tipoArticolo;
 
 
@@ -90,7 +90,7 @@ public class ArticoliController<E> {
 		System.out.println(this.tipoArticolo.getClass().getCanonicalName());
 		System.out.println(this.tipoArticolo.getClass().getSimpleName());
 		System.out.println(this.tipoArticolo.getClass().getTypeName());
-		List<E> searchList = articoliService.selectByFilter(oggetto.getClass().getName(), filter);
+		List<E> searchList = articoliService.selectByFilter(/*oggetto.getClass().getName(), */filter);
 		
 		
 		if (searchList.size() == 0) {

@@ -22,8 +22,8 @@ public class ArticoliServiceImpl<E> implements ArticoliService<E>
 	}
 
 	@Override
-	public List<E> selectByFilter(String oggetto, String filter) {
-		return articoliRepository.selectByObjectAndFilter(oggetto, filter);
+	public List<E> selectByFilter(/*String oggetto, */String filter) {
+		return articoliRepository.selectByObjectAndFilter(/*oggetto, */filter);
 	}
 
 	@Override
