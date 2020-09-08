@@ -8,10 +8,9 @@ public interface ArticoliService<E>
 {
 	public List<Articoli> selectByDescrizione(String descrizione);
 	
-	public Articoli selectByCodArt(String codArt);
+	public List<E> selectByFilter(String filter);
 	
-	public List<E> selectByFilter(/*String oggetto, */String filter);
-	
+	public E saveObject(E object);
 	
 //	public Iterable<T> SelTutti();
 	

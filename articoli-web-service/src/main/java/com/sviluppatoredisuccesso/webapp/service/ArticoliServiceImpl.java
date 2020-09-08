@@ -16,20 +16,26 @@ public class ArticoliServiceImpl<E> implements ArticoliService<E>
 	@Autowired
 	ArticoliRepository<E> articoliRepository;
 
-	@Override
-	public Articoli selectByCodArt(String codArt) {
-		return articoliRepository.findByCodArt(codArt);
-	}
 
 	@Override
-	public List<E> selectByFilter(/*String oggetto, */String filter) {
-		return articoliRepository.selectByObjectAndFilter(/*oggetto, */filter);
+	public List<E> selectByFilter(String filter) {
+		return articoliRepository.selectByObjectAndFilter(filter);
 	}
 
 	@Override
 	public List<Articoli> selectByDescrizione(String descrizione) {
 		return articoliRepository.SelByDescrizioneLike(descrizione);
 	}
+
+	@Override
+	public E saveObject(E object) {
+		return articoliRepository.save(object);
+//		return null;
+	}
+
+	
+
+	
 	
 
 	

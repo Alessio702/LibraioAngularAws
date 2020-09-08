@@ -25,7 +25,7 @@ import com.sviluppatoredisuccesso.webapp.service.ArticoliService;
 public class ArticoliController<E> {
 	private static final Logger logger = LoggerFactory.getLogger(ArticoliController.class);
 
-//	@SuppressWarnings("unused")
+	@SuppressWarnings("unused")
 	private E tipoArticolo;
 
 
@@ -36,21 +36,36 @@ public class ArticoliController<E> {
 	@Autowired
 	private PriceClient priceClient;
 
+	// ------------------- Old Ricerca Per Codice ------------------------------------
+//	@GetMapping(value = "/oldCerca/codice/{codart}", produces = "application/json")
+//	public ResponseEntity<Articoli> oldListArtByCodArt(@PathVariable("codart") String CodArt, HttpServletRequest httpRequest) throws NotFoundException {
+//
+//		logger.info("****** Otteniamo l'articolo con codice " + CodArt + " *******");
+//		String AuthHeader = httpRequest.getHeader("Authorization");
+//		Articoli articolo = articoliService.selectByCodArt(CodArt);
+//		if (articolo == null) {
+//			String ErrMsg = String.format("L'articolo con codice %s non è stato trovato!", CodArt);
+//			logger.warn(ErrMsg);
+//			throw new NotFoundException(ErrMsg);
+//		} else
+//			articolo.setPrezzo(this.getPriceArt(articolo.getCodArt(), "", AuthHeader));
+//		return new ResponseEntity<Articoli>(articolo, HttpStatus.OK);
+//	}
+	
 	// ------------------- Ricerca Per Codice ------------------------------------
 	@GetMapping(value = "/cerca/codice/{codart}", produces = "application/json")
-	public ResponseEntity<Articoli> listArtByCodArt(@PathVariable("codart") String CodArt,
-			HttpServletRequest httpRequest) throws NotFoundException {
+	public ResponseEntity<Articoli> listArtByCodArt(@PathVariable("codart") String CodArt, HttpServletRequest httpRequest) throws NotFoundException {
 
 		logger.info("****** Otteniamo l'articolo con codice " + CodArt + " *******");
 		String AuthHeader = httpRequest.getHeader("Authorization");
-		Articoli articolo = articoliService.selectByCodArt(CodArt);
+		List<E> articolo = articoliService.selectByFilter(CodArt);
 		if (articolo == null) {
 			String ErrMsg = String.format("L'articolo con codice %s non è stato trovato!", CodArt);
 			logger.warn(ErrMsg);
 			throw new NotFoundException(ErrMsg);
 		} else
-			articolo.setPrezzo(this.getPriceArt(articolo.getCodArt(), "", AuthHeader));
-		return new ResponseEntity<Articoli>(articolo, HttpStatus.OK);
+			((Articoli) articolo.get(0)).setPrezzo(this.getPriceArt(((Articoli) articolo.get(0)).getCodArt(), "", AuthHeader));
+		return new ResponseEntity<Articoli>((Articoli) articolo.get(0), HttpStatus.OK);
 	}
 
 //	// ------------------- Ricerca Per Descrizione
@@ -82,17 +97,16 @@ public class ArticoliController<E> {
 	
 
 	@GetMapping(value = "/cerca/{oggetto}/{filter}", produces = "application/json")
-	public ResponseEntity<List<E>> genericSearchByTypeAndFilter(@PathVariable("oggetto") E oggetto,
-			@PathVariable("filter") String filter) throws NotFoundException {
+	public ResponseEntity<List<E>> genericSearchByTypeAndFilter(@PathVariable("oggetto") E oggetto, @PathVariable("filter") String filter) throws NotFoundException {
 
 		logger.info("****** ricerca di " + oggetto + " filtrato per " + filter + "!");
-		System.out.println(this.tipoArticolo.getClass().getName());
-		System.out.println(this.tipoArticolo.getClass().getCanonicalName());
-		System.out.println(this.tipoArticolo.getClass().getSimpleName());
-		System.out.println(this.tipoArticolo.getClass().getTypeName());
-		List<E> searchList = articoliService.selectByFilter(/*oggetto.getClass().getName(), */filter);
+//		System.out.println(this.tipoArticolo.getClass().getName());
+//		System.out.println(this.tipoArticolo.getClass().getCanonicalName());
+//		System.out.println(this.tipoArticolo.getClass().getSimpleName());
+//		System.out.println(this.tipoArticolo.getClass().getTypeName());
+		List<E> searchList = articoliService.selectByFilter(filter);
 		
-		String rigaDiCodice = "moFunziona";
+		
 		
 		if (searchList.size() == 0) {
 			String ErrMsg = String.format("Non è stato trovato alcun oggetto con filtro %s", filter);
@@ -103,6 +117,34 @@ public class ArticoliController<E> {
 		}
 
 	}
+	
+	@GetMapping(value = "/aggiungi", produces = "application/json")
+	public String genericAdd() {
+		
+		logger.info("****** inserimento record ******");
+		
+		return "Angular page";
+	}
+	
+	
+	@GetMapping(value = "/salva/{entity}", produces = "application/json")
+	public void genericSaveEntity(@PathVariable("entity") E entity) {
+
+		logger.info("****** salvataggio record ******");
+		
+		articoliService.saveObject(entity);
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 
 //	@Autowired
 //	private BarcodeService barcodeService;

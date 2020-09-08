@@ -8,17 +8,20 @@ import org.springframework.data.repository.query.Param;
 
 import com.sviluppatoredisuccesso.webapp.entities.Articoli;
 
-public interface ArticoliRepository<E>  extends JpaRepository<Articoli, String>
+public interface ArticoliRepository<E> extends JpaRepository<E, String> 
 {
 	@Query(value = "SELECT * FROM ARTICOLI WHERE DESCRIZIONE LIKE :desArt", nativeQuery = true)
 	List<Articoli> SelByDescrizioneLike(@Param("desArt") String descrizione);
 
-	Articoli findByCodArt(String codArt);
+//	Articoli findByCodArt(String codArt);
 
 	
-	
 	@Query(value = "SELECT t FROM #{#entityName} t WHERE t.descrizione LIKE :filter")
-	List<E> selectByObjectAndFilter(/*String oggetto, */@Param("filter") String filter);
+	List<E> selectByObjectAndFilter(@Param("filter") String filter);
+	
+	
+	
+	
 	
 	
 	
