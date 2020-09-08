@@ -92,6 +92,7 @@ public class ArticoliController<E> {
 		System.out.println(this.tipoArticolo.getClass().getTypeName());
 		List<E> searchList = articoliService.selectByFilter(/*oggetto.getClass().getName(), */filter);
 		
+		String rigaDiCodice = "moFunziona";
 		
 		if (searchList.size() == 0) {
 			String ErrMsg = String.format("Non è stato trovato alcun oggetto con filtro %s", filter);

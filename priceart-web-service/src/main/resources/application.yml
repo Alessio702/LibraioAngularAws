@@ -11,14 +11,14 @@ spring:
   application:
     name: PriceArtService
 # ==============================================================
-# = DBMS PostgreSQL Parameters
+# = Proprietà Fonte Dati PostgreSQL
 # ==============================================================
   datasource:
     initialization-mode: always
-    password: 07139
+    password: ${RDS_PASSWORD:07139}
     platform: postgres
     url: jdbc:postgresql://localhost:5000/postgres
-    username: postgres
+    username: ${RDS_USERNAME:postgres}
   jpa:
     hibernate:
       ddl-auto: update
@@ -29,4 +29,6 @@ spring:
           lob:
             non_contextual_creation: true
     show-sql: true
+  main:
+    allow-bean-definition-overriding: true
 
