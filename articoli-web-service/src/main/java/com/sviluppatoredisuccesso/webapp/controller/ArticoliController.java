@@ -67,25 +67,8 @@ public class ArticoliController<E> {
 			((Articoli) articolo.get(0)).setPrezzo(this.getPriceArt(((Articoli) articolo.get(0)).getCodArt(), "", AuthHeader));
 		return new ResponseEntity<Articoli>((Articoli) articolo.get(0), HttpStatus.OK);
 	}
-
-//	// ------------------- Ricerca Per Descrizione
-//	// ------------------------------------
-//	@GetMapping(value = "/cerca/descrizione/{filter}", produces = "application/json")
-//	public ResponseEntity<List<Articoli>> listArtByDesc(@PathVariable("filter") String Filter,
-//			HttpServletRequest httpRequest) throws NotFoundException {
-//
-//		logger.info("****** Otteniamo gli articoli con Descrizione: " + Filter + " *******");
-//		String AuthHeader = httpRequest.getHeader("Authorization");
-//		List<Articoli> articoli = articoliService.selectByDescrizione(Filter.toUpperCase() + "%");
-//		if (articoli == null) {
-//			String ErrMsg = String.format("Non è stato trovato alcun articolo avente descrizione %s", Filter);
-//			logger.warn(ErrMsg);
-//			throw new NotFoundException(ErrMsg);
-//		} else
-//			articoli.forEach(f -> f.setPrezzo(this.getPriceArt(f.getCodArt(), "", AuthHeader)));
-//		return new ResponseEntity<List<Articoli>>(articoli, HttpStatus.OK);
-//	}
-//
+	
+	
 	private Double getPriceArt(String CodArt, String IdList, String Header) {
 
 		Double Prezzo = (IdList.length() > 0) ? priceClient.getPriceArt(Header, CodArt, IdList)
