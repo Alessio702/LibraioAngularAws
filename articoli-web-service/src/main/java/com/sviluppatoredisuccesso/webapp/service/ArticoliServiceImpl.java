@@ -26,11 +26,26 @@ public class ArticoliServiceImpl<E> implements ArticoliService<E>
 	public List<Articoli> selectByDescrizione(String descrizione) {
 		return articoliRepository.SelByDescrizioneLike(descrizione);
 	}
+	
+	@Override
+	public E selectById(Integer id) {
+		return articoliRepository.findById(id).get();
+	}
 
 	@Override
 	public E saveObject(E object) {
 		return articoliRepository.save(object);
 //		return null;
+	}
+
+	@Override
+	public void deleteObject(E object) {
+		articoliRepository.delete(object);
+	}
+
+	@Override
+	public void deleteObjectById(Integer id) {
+		articoliRepository.deleteById(id);
 	}
 
 	

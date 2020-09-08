@@ -10,7 +10,13 @@ public interface ArticoliService<E>
 	
 	public List<E> selectByFilter(String filter);
 	
+	public E selectById(Integer id);
+	
 	public E saveObject(E object);
+	
+	public void deleteObject(E object);
+	
+	public void deleteObjectById(Integer id);
 	
 //	public Iterable<T> SelTutti();
 	

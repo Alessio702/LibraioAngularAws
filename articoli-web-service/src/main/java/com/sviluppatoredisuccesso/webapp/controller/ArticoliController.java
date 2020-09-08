@@ -132,12 +132,29 @@ public class ArticoliController<E> {
 
 		logger.info("****** salvataggio record ******");
 		
-		articoliService.saveObject(entity);
+		if (entity != null)
+			articoliService.saveObject(entity);
 	}
 	
+	@GetMapping(value = "/cancella/{entity}", produces = "application/json")
+	public void genericDeleteEntity(@PathVariable("entity") E entity) {
+
+		logger.info("****** eliminazione record ******");
+		
+		if (entity != null)
+			articoliService.deleteObject(entity);
+	}
 	
-	
-	
+	@GetMapping(value = "/cancella/{id}", produces = "application/json")
+	public void genericDeleteEntityById(@PathVariable("id") Integer id) {
+
+		logger.info("****** eliminazione record ******");
+		
+		E entity = articoliService.selectById(id);
+		
+		if (entity != null)
+			articoliService.deleteObjectById(id);
+	}
 	
 	
 	

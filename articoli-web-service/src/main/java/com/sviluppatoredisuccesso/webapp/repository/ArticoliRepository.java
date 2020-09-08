@@ -2,13 +2,13 @@ package com.sviluppatoredisuccesso.webapp.repository;
 
 import java.util.List;
 
-import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.query.Param;
 
 import com.sviluppatoredisuccesso.webapp.entities.Articoli;
 
-public interface ArticoliRepository<E> extends JpaRepository<E, String> 
+public interface ArticoliRepository<E> extends CrudRepository<E, Integer> 
 {
 	@Query(value = "SELECT * FROM ARTICOLI WHERE DESCRIZIONE LIKE :desArt", nativeQuery = true)
 	List<Articoli> SelByDescrizioneLike(@Param("desArt") String descrizione);
