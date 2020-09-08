@@ -39,8 +39,6 @@
 	</dependencyManagement>
 
 	<dependencies>
-
-
 		<dependency>
 			<groupId>com.sviluppatoredisuccesso</groupId>
 			<artifactId>articoli.web.service</artifactId>
