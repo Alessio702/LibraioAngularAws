@@ -8,7 +8,7 @@ import org.springframework.data.repository.query.Param;
 import com.sviluppatoredisuccesso.webapp.repository.ArticoliRepository;
 import com.xantrix.webappspec.entities.ArticoliSpec;
 
-public interface ArticoliRepositorySpec<T> extends ArticoliRepository<T> {
+public interface ArticoliRepositorySpec<E> extends ArticoliRepository<E> {
 	
 	// Da rivedere il nome dei campi e della tabella libro
 	@Query(value = "SELECT * FROM LIBRO WHERE REDAZIONE LIKE :redazione", nativeQuery = true)
