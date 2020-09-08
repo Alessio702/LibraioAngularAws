@@ -74,6 +74,7 @@ public class ArticoliController<E> {
 		Double Prezzo = (IdList.length() > 0) ? priceClient.getPriceArt(Header, CodArt, IdList)
 				: priceClient.getDefPriceArt(Header, CodArt);
 		logger.info("Prezzo Articolo " + CodArt + ": " + Prezzo);
+		
 		return Prezzo;
 	}
 	
