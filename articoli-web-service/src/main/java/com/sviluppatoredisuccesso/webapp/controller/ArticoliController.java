@@ -97,7 +97,7 @@ public class ArticoliController<E> {
 	
 
 	@GetMapping(value = "/cerca/{filter}", produces = "application/json")
-	public ResponseEntity<List<E>> genericSearchByTypeAndFilter(@PathVariable("filter") String filter) throws NotFoundException {
+	public ResponseEntity<List<E>> genericSearchByFilter(@PathVariable("filter") String filter) throws NotFoundException {
 
 		logger.info("****** ricerca di filtrato per " + filter + "!");
 //		System.out.println(this.tipoArticolo.getClass().getName());
