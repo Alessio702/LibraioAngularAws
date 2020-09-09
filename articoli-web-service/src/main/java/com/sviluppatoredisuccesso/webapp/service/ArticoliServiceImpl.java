@@ -28,8 +28,8 @@ public class ArticoliServiceImpl<E> implements ArticoliService<E>
 	}
 	
 	@Override
-	public E selectById(Integer id) {
-		return articoliRepository.findById(id).get();
+	public E selectById(String codArt) {
+		return articoliRepository.findById(codArt).get();
 	}
 
 	@Override
@@ -44,8 +44,8 @@ public class ArticoliServiceImpl<E> implements ArticoliService<E>
 	}
 
 	@Override
-	public void deleteObjectById(Integer id) {
-		articoliRepository.deleteById(id);
+	public void deleteObjectById(String codArt) {
+		articoliRepository.deleteById(codArt);
 	}
 
 	

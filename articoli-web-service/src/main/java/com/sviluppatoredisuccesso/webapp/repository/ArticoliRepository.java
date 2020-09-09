@@ -8,7 +8,7 @@ import org.springframework.data.repository.query.Param;
 
 import com.sviluppatoredisuccesso.webapp.entities.Articoli;
 
-public interface ArticoliRepository<E> extends CrudRepository<E, Integer> 
+public interface ArticoliRepository<E> extends CrudRepository<E, String> 
 {
 	@Query(value = "SELECT * FROM ARTICOLI WHERE DESCRIZIONE LIKE :desArt", nativeQuery = true)
 	List<Articoli> SelByDescrizioneLike(@Param("desArt") String descrizione);

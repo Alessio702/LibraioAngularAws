@@ -129,15 +129,15 @@ public class ArticoliController<E> {
 			articoliService.deleteObject(entity);
 	}
 	
-	@GetMapping(value = "/cancella/{id}", produces = "application/json")
-	public void genericDeleteEntityById(@PathVariable("id") Integer id) {
+	@GetMapping(value = "/cancella/{codArt}", produces = "application/json")
+	public void genericDeleteEntityById(@PathVariable("codArt") String codArt) {
 
 		logger.info("****** eliminazione record ******");
 		
-		E entity = articoliService.selectById(id);
+		E entity = articoliService.selectById(codArt);
 		
 		if (entity != null)
-			articoliService.deleteObjectById(id);
+			articoliService.deleteObjectById(codArt);
 	}
 	
 	
