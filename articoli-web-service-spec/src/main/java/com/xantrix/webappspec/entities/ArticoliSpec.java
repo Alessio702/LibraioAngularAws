@@ -2,7 +2,7 @@ package com.xantrix.webappspec.entities;
 
 import com.sviluppatoredisuccesso.webapp.entities.Articoli;
 
-public class ArticoliSpec extends Articoli{
+public class ArticoliSpec extends Articoli {
 
 	/**
 	 * 

@@ -20,6 +20,8 @@ public abstract class ArticoliServiceImpl<E extends Articoli> implements Articol
 //	public ArticoliServiceImpl(ArticoliRepository<E> articoliRepository) {
 //		this.articoliRepository = articoliRepository;
 //	}
+	
+	
 
 	@Override
 	public List<E> selectByFilter(String filter) {
@@ -39,7 +41,6 @@ public abstract class ArticoliServiceImpl<E extends Articoli> implements Articol
 	@Override
 	public E saveObject(E object) {
 		return articoliRepository.save(object);
-//		return null;
 	}
 
 	@Override

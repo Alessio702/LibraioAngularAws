@@ -1,8 +1,9 @@
 package com.xantrix.webappspec.service;
 
 import com.sviluppatoredisuccesso.webapp.service.ArticoliService;
+import com.xantrix.webappspec.entities.ArticoliSpec;
 
-public interface ArticoliServiceSpec<E> extends ArticoliService<E>
+public interface ArticoliServiceSpec extends ArticoliService<ArticoliSpec>
 {
-//	public List<ArticoliSpec> getLibriByRedazione(String redazione);
+
 }

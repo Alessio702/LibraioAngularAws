@@ -42,7 +42,7 @@
 		<dependency>
 			<groupId>com.sviluppatoredisuccesso</groupId>
 			<artifactId>articoli.web.service</artifactId>
-			<version>0.0.4-SNAPSHOT</version>
+			<version>0.0.3-SNAPSHOT</version>
 		</dependency>
 
 		<dependency>

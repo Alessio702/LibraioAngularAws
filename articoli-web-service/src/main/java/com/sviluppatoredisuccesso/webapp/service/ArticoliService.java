@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.sviluppatoredisuccesso.webapp.entities.Articoli;
 
+//@Service
 public interface ArticoliService<E extends Articoli>
 {
 	public abstract List<Articoli> selectByDescrizione(String descrizione);

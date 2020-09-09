@@ -25,14 +25,17 @@ import com.sviluppatoredisuccesso.webapp.service.ArticoliService;
 public class ArticoliController<E extends Articoli> {
 	private static final Logger logger = LoggerFactory.getLogger(ArticoliController.class);
 
-	@SuppressWarnings("unused")
-	private E tipoArticolo;
-
-
+	
 
 	@Autowired
 	private ArticoliService<E> articoliService;
 
+//	@Autowired
+//	public void setService(ArticoliService<E> articoliService) {
+//		this.articoliService = articoliService;
+//	}
+	
+	
 	@Autowired
 	private PriceClient priceClient;
 
