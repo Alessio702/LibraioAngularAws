@@ -4,19 +4,19 @@ import java.util.List;
 
 import com.sviluppatoredisuccesso.webapp.entities.Articoli;
 
-public interface ArticoliService<E>
+public interface ArticoliService<E extends Articoli>
 {
-	public List<Articoli> selectByDescrizione(String descrizione);
+	public abstract List<Articoli> selectByDescrizione(String descrizione);
 	
-	public List<E> selectByFilter(String filter);
+	public abstract List<E> selectByFilter(String filter);
 	
-	public E selectById(String codArt);
+	public abstract E selectById(String codArt);
 	
-	public E saveObject(E object);
+	public abstract E saveObject(E object);
 	
-	public void deleteObject(E object);
+	public abstract void deleteObject(E object);
 	
-	public void deleteObjectById(String codArt);
+	public abstract void deleteObjectById(String codArt);
 	
 //	public Iterable<T> SelTutti();
 	

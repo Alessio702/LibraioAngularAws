@@ -11,11 +11,15 @@ import com.sviluppatoredisuccesso.webapp.repository.ArticoliRepository;
 
 @Service
 @Transactional(readOnly = true)
-public class ArticoliServiceImpl<E extends Articoli> implements ArticoliService<E>
+public abstract class ArticoliServiceImpl<E extends Articoli> implements ArticoliService<E>
 {
 	@Autowired
-	ArticoliRepository<E> articoliRepository;
+	private ArticoliRepository<E> articoliRepository;
 
+//	@Autowired
+//	public ArticoliServiceImpl(ArticoliRepository<E> articoliRepository) {
+//		this.articoliRepository = articoliRepository;
+//	}
 
 	@Override
 	public List<E> selectByFilter(String filter) {

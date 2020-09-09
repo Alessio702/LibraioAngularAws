@@ -22,7 +22,7 @@ import com.sviluppatoredisuccesso.webapp.service.ArticoliService;
 @RestController
 @CrossOrigin
 @RequestMapping("api/articoli")
-public class ArticoliController<E> {
+public class ArticoliController<E extends Articoli> {
 	private static final Logger logger = LoggerFactory.getLogger(ArticoliController.class);
 
 	@SuppressWarnings("unused")
