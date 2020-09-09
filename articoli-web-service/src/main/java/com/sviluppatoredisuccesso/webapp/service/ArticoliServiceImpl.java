@@ -11,7 +11,7 @@ import com.sviluppatoredisuccesso.webapp.repository.ArticoliRepository;
 
 @Service
 @Transactional(readOnly = true)
-public class ArticoliServiceImpl<E> implements ArticoliService<E>
+public class ArticoliServiceImpl<E extends Articoli> implements ArticoliService<E>
 {
 	@Autowired
 	ArticoliRepository<E> articoliRepository;
