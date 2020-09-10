@@ -9,15 +9,23 @@ import javax.servlet.http.HttpServletRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.i18n.LocaleContextHolder;
+import org.springframework.context.support.ResourceBundleMessageSource;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.sviluppatoredisuccesso.webapp.entities.Articoli;
+import com.sviluppatoredisuccesso.webapp.exception.BindingException;
 import com.sviluppatoredisuccesso.webapp.exception.NotFoundException;
 import com.sviluppatoredisuccesso.webapp.service.ArticoliService;
 
@@ -40,6 +48,8 @@ public class ArticoliController<E extends Articoli, ID extends Serializable> {
 		this.articoliService = articoliService;
 	}
 	
+	@Autowired
+	private ResourceBundleMessageSource errMessage;
 
 	// // ------------------- Ricerca Per Codice ------------------------------------
 	// @GetMapping(value = "/cerca/codice/{codart}", produces = "application/json")
@@ -121,11 +131,34 @@ public class ArticoliController<E extends Articoli, ID extends Serializable> {
 	}
 	
 	@GetMapping(value = "/aggiungi", produces = "application/json")
-	public String genericAdd() {
+	public ResponseEntity<?> genericAddArticolo(BindingResult bindingResult) throws BindingException {
 		
 		logger.info("****** inserimento record ******");
 		
-		return "Angular page";
+		if (bindingResult.hasErrors()) {
+			String MsgErr = errMessage.getMessage(bindingResult.getFieldError(), LocaleContextHolder.getLocale());
+			
+			logger.warn(MsgErr);
+
+			throw new BindingException(MsgErr);
+		}
+			
+//		checkForUpdate
+		
+		
+		HttpHeaders headers = new HttpHeaders();
+		ObjectMapper mapper = new ObjectMapper();
+		
+		headers.setContentType(MediaType.APPLICATION_JSON);
+		ObjectNode responseNode = mapper.createObjectNode();
+		
+//		???
+		articoliService.saveObject(null);
+		
+		responseNode.put("code", HttpStatus.OK.toString());
+		responseNode.put("message", "Inserimento Articolo eseguita Con Successo");
+		
+		return new ResponseEntity<>(responseNode, headers, HttpStatus.CREATED);
 	}
 	
 	
