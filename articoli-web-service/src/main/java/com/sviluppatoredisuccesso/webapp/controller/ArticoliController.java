@@ -1,5 +1,6 @@
 package com.sviluppatoredisuccesso.webapp.controller;
 
+import java.io.Serializable;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -22,13 +23,12 @@ import com.sviluppatoredisuccesso.webapp.service.ArticoliService;
 @RestController
 @CrossOrigin
 @RequestMapping("api/articoli")
-public class ArticoliController<E extends Articoli> {
+public class ArticoliController<E extends Articoli, ID extends Serializable> {
+	
 	private static final Logger logger = LoggerFactory.getLogger(ArticoliController.class);
 
-	
-
 	@Autowired
-	private ArticoliService<E> articoliService;
+	private ArticoliService<E, ID> articoliService;
 
 //	@Autowired
 //	public void setService(ArticoliService<E> articoliService) {
@@ -133,7 +133,7 @@ public class ArticoliController<E extends Articoli> {
 	}
 	
 	@GetMapping(value = "/cancella/{codArt}", produces = "application/json")
-	public void genericDeleteEntityById(@PathVariable("codArt") String codArt) {
+	public void genericDeleteEntityById(@PathVariable("codArt") ID codArt) {
 
 		logger.info("****** eliminazione record ******");
 		

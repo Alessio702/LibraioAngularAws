@@ -4,7 +4,7 @@ import com.sviluppatoredisuccesso.webapp.controller.ArticoliController;
 import com.xantrix.webappspec.entities.ArticoliSpec;
 
 //@Controller
-public class ArticoliControllerSpec extends ArticoliController<ArticoliSpec> {
+public class ArticoliControllerSpec extends ArticoliController<ArticoliSpec, String> {
 
 //	public ArticoliControllerSpec(ArticoliService<ArticoliSpec> articoliService) {
 //		super(articoliService);
