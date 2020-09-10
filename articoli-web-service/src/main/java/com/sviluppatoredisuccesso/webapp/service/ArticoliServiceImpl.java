@@ -8,7 +8,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.sviluppatoredisuccesso.webapp.entities.Articoli;
-import com.sviluppatoredisuccesso.webapp.repository.AbstractRepository;
+import com.sviluppatoredisuccesso.webapp.repository.ArticoliRepository;
 
 @Service
 @Transactional(readOnly = true)
@@ -18,15 +18,13 @@ public abstract class ArticoliServiceImpl<E extends Articoli, ID extends Seriali
 //	private ArticoliRepository<E> articoliRepository;
 
 //	@Autowired
-	private AbstractRepository<E, ID> abstractRepository;
+	private ArticoliRepository<E> articoliRepository;
 	
 	@Autowired
-	public ArticoliServiceImpl(AbstractRepository<E, ID> abstractRepository) {
-		this.abstractRepository = abstractRepository;
+	public ArticoliServiceImpl(ArticoliRepository<E> articoliRepository) {
+		this.articoliRepository = articoliRepository;
 	}
 	
-	
-	// Implementare metodi
 	
 	@Override
 	public List<Articoli> selectByDescrizione(String descrizione) {
@@ -39,32 +37,23 @@ public abstract class ArticoliServiceImpl<E extends Articoli, ID extends Seriali
 	}
 
 	@Override
-	public E selectById(ID codArt) {
-		return abstractRepository.search(codArt);
+	public E selectById(String codArt) {
+		return articoliRepository.findById(codArt).get();
 	}
 
 	@Override
-	public String saveObject(E object) {
-		abstractRepository.save(object);
-		
-		return "Articolo '" + object.getDescrizione() + "' salvato correttamente!";
+	public void saveObject(E object) {
+		articoliRepository.save(object);
 	}
 	
 	@Override
-	public String updateObject(E object) {
-		abstractRepository.update(object);
-		
-		return "Articolo '" + object.getDescrizione() + "' aggiornato correttamente!";
-	}
-
-	@Override
 	public void deleteObject(E object) {
-		abstractRepository.delete(object);
+		articoliRepository.delete(object);
 	}
 
 	@Override
-	public void deleteObjectById(ID codArt) {
-		
+	public void deleteObjectById(String codArt) {
+		articoliRepository.deleteById(codArt);
 	}
 	
 	

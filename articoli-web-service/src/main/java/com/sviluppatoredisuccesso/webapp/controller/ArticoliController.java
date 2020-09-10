@@ -148,7 +148,7 @@ public class ArticoliController<E extends Articoli, ID extends Serializable> {
 	}
 	
 	@GetMapping(value = "/cancella/{codArt}", produces = "application/json")
-	public void genericDeleteEntityById(@PathVariable("codArt") ID codArt) {
+	public void genericDeleteEntityById(@PathVariable("codArt") String codArt) {
 
 		logger.info("****** eliminazione record ******");
 		
