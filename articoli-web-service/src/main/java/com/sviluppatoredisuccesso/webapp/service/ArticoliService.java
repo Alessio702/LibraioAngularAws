@@ -5,7 +5,6 @@ import java.util.List;
 
 import com.sviluppatoredisuccesso.webapp.entities.Articoli;
 
-//@Service
 public interface ArticoliService<E extends Articoli, ID extends Serializable>
 {
 	public abstract List<Articoli> selectByDescrizione(String descrizione);

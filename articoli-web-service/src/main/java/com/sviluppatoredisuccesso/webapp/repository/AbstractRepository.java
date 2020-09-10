@@ -9,6 +9,9 @@ import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
 
+import org.springframework.stereotype.Repository;
+
+@Repository
 public abstract class AbstractRepository<E, ID> {
 	
 	private final EntityManagerFactory emf = Persistence.createEntityManagerFactory("PersistenceUnit");

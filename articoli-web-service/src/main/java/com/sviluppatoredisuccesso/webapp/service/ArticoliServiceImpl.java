@@ -17,12 +17,16 @@ public abstract class ArticoliServiceImpl<E extends Articoli, ID extends Seriali
 //	@Autowired
 //	private ArticoliRepository<E> articoliRepository;
 
-	@Autowired
+//	@Autowired
 	private AbstractRepository<E, ID> abstractRepository;
 	
+	@Autowired
+	public ArticoliServiceImpl(AbstractRepository<E, ID> abstractRepository) {
+		this.abstractRepository = abstractRepository;
+	}
+	
+	
 	// Implementare metodi
-	
-	
 	
 	@Override
 	public List<Articoli> selectByDescrizione(String descrizione) {
