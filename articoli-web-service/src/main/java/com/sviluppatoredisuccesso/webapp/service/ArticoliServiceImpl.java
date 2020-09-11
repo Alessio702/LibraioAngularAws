@@ -15,13 +15,13 @@ import com.sviluppatoredisuccesso.webapp.repository.ArticoliRepository;
 public abstract class ArticoliServiceImpl<E extends Articoli, ID extends Serializable> implements ArticoliService<E, ID>
 {
 
-//	@Autowired
+	@Autowired
 	private ArticoliRepository<E> articoliRepository;
 	
-	@Autowired
-	public ArticoliServiceImpl(ArticoliRepository<E> articoliRepository) {
-		this.articoliRepository = articoliRepository;
-	}
+//	@Autowired
+//	public ArticoliServiceImpl(ArticoliRepository<E> articoliRepository) {
+//		this.articoliRepository = articoliRepository;
+//	}
 	
 	
 	@Override
@@ -31,7 +31,7 @@ public abstract class ArticoliServiceImpl<E extends Articoli, ID extends Seriali
 
 	@Override
 	public List<E> selectByFilter(String filter) {
-		return null;
+		return articoliRepository.selectByObjectAndFilter(filter);
 	}
 
 	@Override

@@ -40,33 +40,15 @@ public class ArticoliController<E extends Articoli, ID extends Serializable> {
 	@Autowired
 	private PriceClient priceClient;
 	
-//	@Autowired
-	private ArticoliService<E, ID> articoliService;
-
 	@Autowired
-	public void setService(ArticoliService<E, ID> articoliService) {
-		this.articoliService = articoliService;
-	}
+	private ArticoliService<E, ID> articoliService;
 	
 	@Autowired
 	private ResourceBundleMessageSource errMessage;
 
-	// // ------------------- Ricerca Per Codice ------------------------------------
-	// @GetMapping(value = "/cerca/codice/{codart}", produces = "application/json")
-	// public ResponseEntity<Articoli> listArtByCodArt(@PathVariable("codart") String CodArt,
-	//   HttpServletRequest httpRequest) throws NotFoundException {
-	//
-	//  logger.info("****** Otteniamo l'articolo con codice " + CodArt + " *******");
-	//  String AuthHeader = httpRequest.getHeader("Authorization");
-	//  Articoli articolo = articoliService.selectByCodArt(CodArt);
-	//  if (articolo == null) {
-	//   String ErrMsg = String.format("L'articolo con codice %s non è stato trovato!", CodArt);
-	//   logger.warn(ErrMsg);
-	//   throw new NotFoundException(ErrMsg);
-	//  } else
-	//   articolo.setPrezzo(this.getPriceArt(articolo.getCodArt(), "", AuthHeader));
-	//  return new ResponseEntity<Articoli>(articolo, HttpStatus.OK);
-	// }
+	
+	
+	
 
 	// ------------------- Ricerca Per Descrizione
 	// ------------------------------------
