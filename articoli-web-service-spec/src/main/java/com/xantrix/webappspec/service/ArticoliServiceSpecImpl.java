@@ -10,6 +10,8 @@ import com.xantrix.webappspec.entities.ArticoliSpec;
 @Transactional(readOnly = true)
 public class ArticoliServiceSpecImpl extends ArticoliServiceImpl<ArticoliSpec, String> implements ArticoliServiceSpec
 {
+
+	
 	
 //	public ArticoliServiceSpecImpl(ArticoliRepository<ArticoliSpec> articoliRepository) {
 //		super(articoliRepository);

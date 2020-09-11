@@ -25,7 +25,6 @@ spring:
     properties:
       hibernate:
         hbm2ddl.auto: update
-        default_schema: 'public'
         dialect: org.hibernate.dialect.PostgreSQLDialect
         jdbc:
           lob:

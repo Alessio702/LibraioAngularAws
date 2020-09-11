@@ -8,11 +8,9 @@ import javax.persistence.Table;
 
 import com.sviluppatoredisuccesso.webapp.entities.Articoli;
 
-import lombok.Data;
 
 @Entity
 @Table(name = "AWS_ProvaSpec")
-@Data
 public class ArticoliSpec extends Articoli {
 
 	/**

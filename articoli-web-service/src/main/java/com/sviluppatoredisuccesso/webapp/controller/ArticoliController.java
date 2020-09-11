@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.validation.Valid;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -18,6 +19,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -25,6 +27,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.sviluppatoredisuccesso.webapp.entities.Articoli;
 import com.sviluppatoredisuccesso.webapp.exception.BindingException;
+import com.sviluppatoredisuccesso.webapp.exception.DuplicateException;
 import com.sviluppatoredisuccesso.webapp.exception.NotFoundException;
 import com.sviluppatoredisuccesso.webapp.service.ArticoliService;
 
@@ -71,8 +74,7 @@ public class ArticoliController<E extends Articoli, ID extends Serializable> {
 	}
 
 
-	private Double getPriceArt(String CodArt, String IdList, String Header)
-	{
+	private Double getPriceArt(String CodArt, String IdList, String Header) {
 		try {
 			Double Prezzo = (IdList.length() > 0) ? priceClient.getPriceArt(Header, CodArt, IdList) : 
 				priceClient.getDefPriceArt(Header, CodArt);
@@ -107,7 +109,7 @@ public class ArticoliController<E extends Articoli, ID extends Serializable> {
 	}
 	
 	@GetMapping(value = "/aggiungi", produces = "application/json")
-	public ResponseEntity<?> genericAddArticolo(BindingResult bindingResult) throws BindingException {
+	public ResponseEntity<?> genericAddObject(@Valid @RequestBody E object, BindingResult bindingResult) throws BindingException, DuplicateException {
 		
 		logger.info("****** inserimento record ******");
 		
@@ -115,12 +117,21 @@ public class ArticoliController<E extends Articoli, ID extends Serializable> {
 			String MsgErr = errMessage.getMessage(bindingResult.getFieldError(), LocaleContextHolder.getLocale());
 			
 			logger.warn(MsgErr);
-
+			
 			throw new BindingException(MsgErr);
 		}
 			
-//		checkForUpdate
-		
+		//Disabilitare se si vuole gestire anche la modifica 
+		Articoli checkArt =  articoliService.selByCodArt(object.getCodArt());
+
+		if (checkArt != null) {
+			String MsgErr = String.format("Articolo %s presente in anagrafica! "
+					+ "Impossibile utilizzare il metodo POST", object.getCodArt());	
+			
+			logger.warn(MsgErr);
+			
+			throw new DuplicateException(MsgErr);
+		}
 		
 		HttpHeaders headers = new HttpHeaders();
 		ObjectMapper mapper = new ObjectMapper();
@@ -128,8 +139,7 @@ public class ArticoliController<E extends Articoli, ID extends Serializable> {
 		headers.setContentType(MediaType.APPLICATION_JSON);
 		ObjectNode responseNode = mapper.createObjectNode();
 		
-//		???
-		articoliService.saveObject(null);
+		articoliService.addOrUpdate(object);
 		
 		responseNode.put("code", HttpStatus.OK.toString());
 		responseNode.put("message", "Inserimento Articolo eseguita Con Successo");
@@ -138,34 +148,90 @@ public class ArticoliController<E extends Articoli, ID extends Serializable> {
 	}
 	
 	
-	@GetMapping(value = "/salva/{entity}", produces = "application/json")
-	public void genericSaveEntity(@PathVariable("entity") E entity) {
+	@GetMapping(value = "/modifica", produces = "application/json")
+	public ResponseEntity<?> genericUpdateEntity(@Valid @RequestBody E articolo, BindingResult bindingResult) throws BindingException, NotFoundException {
 
 		logger.info("****** salvataggio record ******");
 		
-		if (entity != null)
-			articoliService.saveObject(entity);
+		if (bindingResult.hasErrors()) {
+			String MsgErr = errMessage.getMessage(bindingResult.getFieldError(), LocaleContextHolder.getLocale());
+			
+			logger.warn(MsgErr);
+
+			throw new BindingException(MsgErr);
+		}
+		
+		// Check se l'articolo esiste
+		Articoli checkArt =  articoliService.selByCodArt(articolo.getCodArt());
+
+		if (checkArt == null) {
+			String MsgErr = String.format("Articolo %s non presente in anagrafica! "
+					+ "Impossibile utilizzare il metodo PUT", articolo.getCodArt());
+			
+			logger.warn(MsgErr);
+			
+			throw new NotFoundException(MsgErr);
+		}
+		
+		
+		HttpHeaders headers = new HttpHeaders();
+		ObjectMapper mapper = new ObjectMapper();
+		
+		headers.setContentType(MediaType.APPLICATION_JSON);
+
+		ObjectNode responseNode = mapper.createObjectNode();
+
+		articoliService.addOrUpdate(articolo);
+		
+		responseNode.put("code", HttpStatus.OK.toString());
+		responseNode.put("message", "Modifica Articolo " + articolo.getCodArt() + " Eseguita Con Successo");
+
+		return new ResponseEntity<>(responseNode, headers, HttpStatus.CREATED);
 	}
 	
-	@GetMapping(value = "/cancella/{entity}", produces = "application/json")
-	public void genericDeleteEntity(@PathVariable("entity") E entity) {
+	@GetMapping(value = "/elimina/{codArt}", produces = "application/json")
+	public ResponseEntity<?> deleteArt(@PathVariable("codart") String codArt) throws  NotFoundException {
+		logger.info("Eliminiamo l'articolo con codice " + codArt);
 
-		logger.info("****** eliminazione record ******");
-		
-		if (entity != null)
-			articoliService.deleteObject(entity);
+		HttpHeaders headers = new HttpHeaders();
+		ObjectMapper mapper = new ObjectMapper();
+
+		headers.setContentType(MediaType.APPLICATION_JSON);
+
+		ObjectNode responseNode = mapper.createObjectNode();
+
+		Articoli articolo = articoliService.selByCodArt(codArt);
+
+		if (articolo == null) {
+			String MsgErr = String.format("Articolo %s non presente in anagrafica!", codArt);
+			
+			logger.warn(MsgErr);
+			
+			throw new NotFoundException(MsgErr);
+		}
+
+		articoliService.deleteObjectById(codArt);
+
+		responseNode.put("code", HttpStatus.OK.toString());
+		responseNode.put("message", "Eliminazione Articolo " + codArt + " Eseguita Con Successo");
+
+		return new ResponseEntity<>(responseNode, headers, HttpStatus.OK);
 	}
 	
-	@GetMapping(value = "/cancella/{codArt}", produces = "application/json")
-	public void genericDeleteEntityById(@PathVariable("codArt") String codArt) {
-
-		logger.info("****** eliminazione record ******");
-		
-		E entity = articoliService.selectById(codArt);
-		
-		if (entity != null)
-			articoliService.deleteObjectById(codArt);
-	}
+	
+	
+	
+	
+//	@GetMapping(value = "/cancella/{codArt}", produces = "application/json")
+//	public void genericDeleteEntityById(@PathVariable("codArt") String codArt) {
+//
+//		logger.info("****** eliminazione record ******");
+//		
+//		E entity = articoliService.selectById(codArt);
+//		
+//		if (entity != null)
+//			articoliService.deleteObjectById(codArt);
+//	}
 	
 	
 	

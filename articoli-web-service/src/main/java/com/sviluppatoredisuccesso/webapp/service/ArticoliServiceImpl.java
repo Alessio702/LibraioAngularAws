@@ -33,6 +33,11 @@ public abstract class ArticoliServiceImpl<E extends Articoli, ID extends Seriali
 	public List<E> selectByFilter(String filter) {
 		return articoliRepository.selectByObjectAndFilter(filter);
 	}
+	
+	@Override
+	public Articoli selByCodArt(String codArt) {
+		return articoliRepository.selectByCodArt(codArt);
+	}
 
 	@Override
 	public E selectById(String codArt) {
@@ -40,7 +45,7 @@ public abstract class ArticoliServiceImpl<E extends Articoli, ID extends Seriali
 	}
 
 	@Override
-	public void saveObject(E object) {
+	public void addOrUpdate(E object) {
 		articoliRepository.save(object);
 	}
 	

@@ -11,9 +11,11 @@ public interface ArticoliService<E extends Articoli, ID extends Serializable>
 	
 	public abstract List<E> selectByFilter(String filter);
 	
+	public abstract Articoli selByCodArt(String codArt);
+	
 	public abstract E selectById(String codArt);
 	
-	public abstract void saveObject(E object);
+	public abstract void addOrUpdate(E object);
 	
 	public abstract void deleteObject(E object);
 	

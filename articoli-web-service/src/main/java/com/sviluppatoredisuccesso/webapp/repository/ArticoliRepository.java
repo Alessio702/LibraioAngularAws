@@ -23,6 +23,8 @@ public interface ArticoliRepository<E extends Articoli> extends JpaRepository<E,
 	@Query(value = "SELECT * FROM #{#entityName} WHERE nome LIKE :filter", nativeQuery = true)
 	List<E> selectByObjectAndFilter(@Param("filter") String filter);
 	
+	@Query(value = "SELECT * FROM #{#entityName} WHERE codArt LIKE :codArt", nativeQuery = true)
+	Articoli selectByCodArt(@Param("codArt") String codArt);
 	
 	
 	
