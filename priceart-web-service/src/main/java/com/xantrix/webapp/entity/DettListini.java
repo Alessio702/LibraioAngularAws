@@ -22,7 +22,7 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 @Entity
-@Table(name = "dettlistini")
+@Table(name = "Aws_dettlistini")
 @Data
 public class DettListini implements Serializable {
 	private static final long serialVersionUID = 8777751177774522519L;

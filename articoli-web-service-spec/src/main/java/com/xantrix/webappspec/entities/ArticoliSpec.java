@@ -1,20 +1,49 @@
 package com.xantrix.webappspec.entities;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.Table;
+
 import com.sviluppatoredisuccesso.webapp.entities.Articoli;
 
+import lombok.Data;
+
+@Entity
+@Table(name = "AWS_ProvaSpec")
+@Data
 public class ArticoliSpec extends Articoli {
 
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 8717908017460090411L;
-	
-	// Libro	
-	private String nome;
-	
-	private String redazione;
 
 	
+	@Id
+	@Column(name = "IDSPEC")
+	@GeneratedValue
+	private String idSpec;
+	
+	
+	@Column(name = "NOME")
+	private String nome;
+
+	@Column(name = "REDAZIONE")
+	private String redazione;
+
+
+	
+	
+	public String getIdSpec() {
+		return idSpec;
+	}
+
+	public void setIdSpec(String idSpec) {
+		this.idSpec = idSpec;
+	}
+
 	public String getNome() {
 		return nome;
 	}
@@ -30,5 +59,8 @@ public class ArticoliSpec extends Articoli {
 	public void setRedazione(String redazione) {
 		this.redazione = redazione;
 	}
-	
+
+	public static long getSerialversionuid() {
+		return serialVersionUID;
+	}
 }

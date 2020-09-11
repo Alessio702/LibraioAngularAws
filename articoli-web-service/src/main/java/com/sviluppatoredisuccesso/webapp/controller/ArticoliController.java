@@ -1,7 +1,6 @@
 package com.sviluppatoredisuccesso.webapp.controller;
 
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -53,17 +52,12 @@ public class ArticoliController<E extends Articoli, ID extends Serializable> {
 	// ------------------- Ricerca Per Descrizione
 	// ------------------------------------
 	@GetMapping(value = "/cerca/descrizione/{filter}", produces = "application/json")
-	public ResponseEntity<List<Articoli>> genericSearchByTypeAndFilter (@PathVariable("filter") String filter, HttpServletRequest httpRequest) throws NotFoundException {
+	public ResponseEntity<List<E>> genericSearchByTypeAndFilter (@PathVariable("filter") String filter, HttpServletRequest httpRequest) throws NotFoundException {
 
 		logger.info("****** filtrato per " + filter + "!");
 		String AuthHeader = httpRequest.getHeader("Authorization");
 
-		List<Articoli> searchList = new ArrayList<Articoli>();
-		List<E> genericListByFilter = articoliService.selectByFilter(filter);
-		
-		for (int i = 0; i < genericListByFilter.size(); i++) {
-			searchList.add((Articoli) genericListByFilter.get(i));
-		}
+		List<E> searchList = articoliService.selectByFilter(filter);
 		
 		if (searchList.size() == 0) {
 			String ErrMsg = String.format("Non è stato trovato alcun oggetto con filtro %s", filter);
@@ -72,7 +66,7 @@ public class ArticoliController<E extends Articoli, ID extends Serializable> {
 			throw new NotFoundException(ErrMsg);
 		} else {
 			searchList.forEach(f -> f.setPrezzo(this.getPriceArt(f.getCodArt(), "", AuthHeader)));
-			return new ResponseEntity<List<Articoli>>(searchList, HttpStatus.OK);
+			return new ResponseEntity<List<E>>(searchList, HttpStatus.OK);
 		}
 	}
 

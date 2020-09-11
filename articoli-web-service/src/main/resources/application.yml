@@ -8,6 +8,8 @@ server:
 spring:
   application:
     name: ProductsWebService
+    
+    
 # ==============================================================
 # = Proprietà Fonte Dati PostgreSQL
 # ==============================================================
@@ -22,16 +24,16 @@ spring:
       ddl-auto: update
     properties:
       hibernate:
+        hbm2ddl.auto: update
+        default_schema: 'public'
         dialect: org.hibernate.dialect.PostgreSQLDialect
         jdbc:
           lob:
             non_contextual_creation: true
     show-sql: true
+    generate-ddl:  true
+  main:
+    allow-bean-definition-overriding: true
     
 
-  
-
-
-
-  
 

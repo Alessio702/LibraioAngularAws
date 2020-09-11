@@ -13,7 +13,7 @@ import javax.validation.constraints.Size;
 import lombok.Data;
 
 @Entity
-@Table(name = "ARTICOLI2")
+@Table(name = "AWS_ARTICOLI2")
 @Data
 public class Articoli implements Serializable {
 	private static final long serialVersionUID = 291353626011036772L;
