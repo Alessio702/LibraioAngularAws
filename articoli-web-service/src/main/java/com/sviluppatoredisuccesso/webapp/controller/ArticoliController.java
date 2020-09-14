@@ -44,10 +44,35 @@ public class ArticoliController<E extends Articoli, G extends ArticoliDto, ID ex
 	
 	private static final Logger logger = LoggerFactory.getLogger(ArticoliController.class);
 	
+	
 	@SuppressWarnings("unchecked")
 	public Class<G> getClassType() {
 		return (Class<G>) ((ParameterizedType) getClass().getSuperclass().getGenericSuperclass()).getActualTypeArguments()[1].getClass();
 	}
+	
+	
+//	<!-- B -->
+//	private final TypeToken<G> typeToken = new TypeToken<G>(getClass()) { };
+//	private final Type type = typeToken.getType();
+//	
+//	public Type getClassType2() {
+//		return type;
+//	}
+	
+//	<!-- C -->
+//	@SuppressWarnings("unchecked")
+//	private Class<G> getGenericTypeClass() {
+//        try {
+//            String className = ((ParameterizedType) getClass().getGenericSuperclass()).getActualTypeArguments()[0].getTypeName();
+//            Class<?> clazz = Class.forName(className);
+//            
+//            return (Class<G>) clazz;
+//        } catch (Exception e) {
+//            throw new IllegalStateException("Class is not parametrized with generic type!!! Please use extends <> ");
+//        }
+//    }
+
+	
 	
 	@Autowired
 	private PriceClient priceClient;
