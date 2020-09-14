@@ -35,7 +35,7 @@ public abstract class ArticoliServiceImpl<E extends Articoli, ID extends Seriali
 	}
 	
 	@Override
-	public Articoli selByCodArt(String codArt) {
+	public E selectByCodArt(String codArt) {
 		return articoliRepository.selectByCodArt(codArt);
 	}
 
