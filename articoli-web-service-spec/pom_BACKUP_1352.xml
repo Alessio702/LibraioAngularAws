@@ -4,14 +4,12 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 
-	<groupId>com.sviluppatoredisuccesso</groupId>
-	<artifactId>articoli.web.service</artifactId>
-
-	<version>0.0.3-SNAPSHOT</version>
-
+	<groupId>com.xantrix.webapp</groupId>
+	<artifactId>articoli.web.service.spec</artifactId>
+	<version>0.0.1-SNAPSHOT</version>
 	<packaging>jar</packaging>
 
-	<name>articoli-web-service</name>
+	<name>articoli-web-service-spec</name>
 	<description>Microservice Gestione Articoli</description>
 
 	<parent>
@@ -40,18 +38,21 @@
 		</dependencies>
 	</dependencyManagement>
 
-	<distributionManagement>
-		<snapshotRepository>
-			<id>ossrh</id>
-			<url>https://oss.sonatype.org/content/repositories/snapshots</url>
-		</snapshotRepository>
-		<repository>
-			<id>ossrh</id>
-			<url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
-		</repository>
-	</distributionManagement>
-
 	<dependencies>
+<<<<<<< HEAD
+
+
+		<dependency>
+			<groupId>com.sviluppatoredisuccesso</groupId>
+			<artifactId>articoli.web.service</artifactId>
+			<version>0.0.2-SNAPSHOT</version>
+=======
+		<dependency>
+			<groupId>com.sviluppatoredisuccesso</groupId>
+			<artifactId>articoli.web.service</artifactId>
+			<version>0.0.3-SNAPSHOT</version>
+>>>>>>> alessio
+		</dependency>
 
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
@@ -63,25 +64,20 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-web</artifactId>
 		</dependency>
-
+<<<<<<< HEAD
+=======
 		
-		<!-- https://mvnrepository.com/artifact/com.google.guava/guava -->
-		<dependency>
-		    <groupId>com.google.guava</groupId>
-		    <artifactId>guava</artifactId>
-		    <version>29.0-jre</version>
-		</dependency>
-				
-
-
+>>>>>>> alessio
 		<!-- Postgresql -->
 		<dependency>
 			<groupId>org.postgresql</groupId>
 			<artifactId>postgresql</artifactId>
 			<scope>runtime</scope>
 		</dependency>
+<<<<<<< HEAD
+=======
 
-		
+>>>>>>> alessio
 		<!-- feign -->
 		<dependency>
 			<groupId>org.springframework.cloud</groupId>
@@ -106,50 +102,36 @@
 			<scope>test</scope>
 		</dependency>
 
-		
-		 <dependency>
-		    <groupId>org.modelmapper</groupId>
-		    <artifactId>modelmapper</artifactId>
-		    <version>2.3.5</version>
-		</dependency>
 
 	</dependencies>
-
-
-
 
 	<build>
 		<plugins>
 			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-deploy-plugin</artifactId>
-				<configuration>
-					<skip>true</skip>
-				</configuration>
-			</plugin>
-			<plugin>
-				<groupId>org.sonatype.plugins</groupId>
-				<artifactId>nexus-staging-maven-plugin</artifactId>
-				<version>1.5.1</version>
-				<executions>
-					<execution>
-						<id>default-deploy</id>
-						<phase>deploy</phase>
-						<goals>
-							<goal>deploy</goal>
-						</goals>
-					</execution>
-				</executions>
-				<configuration>
-					<serverId>ossrh</serverId>
-					<nexusUrl>https://oss.sonatype.org/</nexusUrl>
-					<skipStaging>true</skipStaging>
-				</configuration>
+				<groupId>org.springframework.boot</groupId>
+				<artifactId>spring-boot-maven-plugin</artifactId>
 			</plugin>
 		</plugins>
 	</build>
 
 	<repositories>
+		<repository>
+			<id>oss.sonatype.org-snapshot</id>
+			<url>https://oss.sonatype.org/content/repositories/snapshots</url>
+
+		</repository>
+		<repository>
+			<id>maven-central</id>
+			<url>https://repo.maven.apache.org/maven2/</url>
+			<releases>
+				<enabled>true</enabled>
+			</releases>
+			<snapshots>
+				<enabled>true</enabled>
+			</snapshots>
+		</repository>
+
+
 		<repository>
 			<id>spring-snapshots</id>
 			<name>Spring Snapshots</name>

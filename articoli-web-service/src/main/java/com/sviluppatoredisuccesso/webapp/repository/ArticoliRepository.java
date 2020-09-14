@@ -2,19 +2,32 @@ package com.sviluppatoredisuccesso.webapp.repository;
 
 import java.util.List;
 
+
+import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.PagingAndSortingRepository;
+
 import org.springframework.data.repository.query.Param;
 
 import com.sviluppatoredisuccesso.webapp.entities.Articoli;
 
-public interface ArticoliRepository  extends PagingAndSortingRepository<Articoli, String>
+
+
+public interface ArticoliRepository<E extends Articoli> extends JpaRepository<E, String> 
 {
 	@Query(value = "SELECT * FROM ARTICOLI WHERE DESCRIZIONE LIKE :desArt", nativeQuery = true)
-	List<Articoli> SelByDescrizioneLike(@Param("desArt") String descrizione);
+	List<Articoli> selByDescrizioneLike(@Param("desArt") String descrizione);
 
-	Articoli findByCodArt(String codArt);
+//	Articoli findByCodArt(String codArt);
 
 	
-	//	List<Articoli> findByDescrizioneLike(String descrizione, Pageable pageable);
+	@Query(value = "SELECT t FROM #{#entityName} t WHERE t.descrizione LIKE :filter")
+	List<E> selectByFilter(@Param("filter") String filter);
+	
+	@Query(value = "SELECT t FROM #{#entityName} t WHERE t.codArt LIKE :codArt")
+	E selectByCodArt(@Param("codArt") String codArt);
+	
+	
+//	@Query(value = "SELECT * FROM LIBRO WHERE " + filter + " LIKE :filter", nativeQuery = true)
+//	List<Object> SelByFilterLike(@Param("filter") String filter);
+
 }

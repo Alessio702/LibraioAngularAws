@@ -1,5 +1,7 @@
 package com.sviluppatoredisuccesso.webapp.service;
 
+
+import java.io.Serializable;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,52 +13,52 @@ import com.sviluppatoredisuccesso.webapp.repository.ArticoliRepository;
 
 @Service
 @Transactional(readOnly = true)
-public class ArticoliServiceImpl implements ArticoliService
+public abstract class ArticoliServiceImpl<E extends Articoli, ID extends Serializable> implements ArticoliService<E, ID>
 {
+
 	@Autowired
-	ArticoliRepository articoliRepository;
+	private ArticoliRepository<E> articoliRepository;
 	
+//	@Autowired
+//	public ArticoliServiceImpl(ArticoliRepository<E> articoliRepository) {
+//		this.articoliRepository = articoliRepository;
+//	}
+	
+	
+	@Override
+	public List<Articoli> selectByDescrizione(String descrizione) {
+		return articoliRepository.selByDescrizioneLike(descrizione);
+	}
 
 	@Override
-	public List<Articoli> SelByDescrizione(String descrizione)
-	{
-		return articoliRepository.SelByDescrizioneLike(descrizione);
+	public List<E> selectByFilter(String filter) {
+		return articoliRepository.selectByFilter(filter);
 	}
 	
 	@Override
-	public Articoli SelByCodArt(String codArt)
-	{
-		return articoliRepository.findByCodArt(codArt);
+	public E selectByCodArt(String codArt) {
+		return articoliRepository.selectByCodArt(codArt);
 	}
 
+	@Override
+	public E selectById(String codArt) {
+		return articoliRepository.findById(codArt).get();
+	}
+
+	@Override
+	public void addOrUpdate(E object) {
+		articoliRepository.save(object);
+	}
+	
+	@Override
+	public void deleteObject(E object) {
+		articoliRepository.delete(object);
+	}
+
+	@Override
+	public void deleteObjectById(String codArt) {
+		articoliRepository.deleteById(codArt);
+	}
 	
 	
-	
-	
-	
-//	@Override
-//	public Iterable<Articoli> SelTutti()
-//	{
-//		return articoliRepository.findAll();
-//	}
-	
-//	@Override
-//	public List<Articoli> SelByDescrizione(String descrizione, Pageable pageable)
-//	{
-//		return articoliRepository.findByDescrizioneLike(descrizione, pageable);
-//	}
-//
-//	@Override
-//	@Transactional
-//	public void DelArticolo(Articoli articolo)
-//	{
-//		articoliRepository.delete(articolo);
-//	}
-//
-//	@Override
-//	@Transactional
-//	public void InsArticolo(Articoli articolo)
-//	{
-//		articoliRepository.save(articolo);
-//	}
 }

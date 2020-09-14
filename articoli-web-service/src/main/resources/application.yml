@@ -3,11 +3,14 @@
 # ==============================================================
 
 server:
-  port: 5000
+
+  port: 5001
   
 spring:
   application:
     name: ProductsWebService
+
+    
 # ==============================================================
 # = Proprietà Fonte Dati PostgreSQL
 # ==============================================================
@@ -27,11 +30,7 @@ spring:
           lob:
             non_contextual_creation: true
     show-sql: true
+    generate-ddl:  true
+  main:
+    allow-bean-definition-overriding: true
     
-
-  
-
-
-
-  
-

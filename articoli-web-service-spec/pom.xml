@@ -40,11 +40,11 @@
 
 	<dependencies>
 
-
 		<dependency>
 			<groupId>com.sviluppatoredisuccesso</groupId>
 			<artifactId>articoli.web.service</artifactId>
-			<version>0.0.2-SNAPSHOT</version>
+			<version>0.0.3-SNAPSHOT</version>
+
 		</dependency>
 
 		<dependency>
@@ -57,12 +57,16 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-web</artifactId>
 		</dependency>
+
+
 		<!-- Postgresql -->
 		<dependency>
 			<groupId>org.postgresql</groupId>
 			<artifactId>postgresql</artifactId>
 			<scope>runtime</scope>
 		</dependency>
+
+
 		<!-- feign -->
 		<dependency>
 			<groupId>org.springframework.cloud</groupId>

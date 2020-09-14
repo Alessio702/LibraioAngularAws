@@ -19,7 +19,8 @@ import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.Data;
 
 @Entity
-@Table(name = "listini")
+
+@Table(name = "Aws_listini")
 @Data
 public class Listini implements Serializable {
 	private static final long serialVersionUID = 1891268953233014092L;
