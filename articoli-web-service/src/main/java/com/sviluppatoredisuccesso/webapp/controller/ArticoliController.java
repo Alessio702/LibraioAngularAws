@@ -19,6 +19,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -52,64 +53,50 @@ public class ArticoliController<E extends Articoli, ID extends Serializable> {
 	
 	
 
-	// ------------------- Ricerca Per Descrizione
-	// ------------------------------------
-	@GetMapping(value = "/cerca/descrizione/{filter}", produces = "application/json")
-	public ResponseEntity<List<E>> genericSearchByTypeAndFilter (@PathVariable("filter") String filter, HttpServletRequest httpRequest) throws NotFoundException {
+//	 ------------------- Ricerca Per Descrizione
+//	 ------------------------------------
+//	@GetMapping(value = "/cerca/descrizione/{filter}", produces = "application/json")
+//	public ResponseEntity<List<E>> genericSearchByTypeAndFilter (@PathVariable("filter") String filter, HttpServletRequest httpRequest) throws NotFoundException {
+//
+//		logger.info("****** filtrato per " + filter + "!");
+//		String AuthHeader = httpRequest.getHeader("Authorization");
+//
+//		List<E> searchList = articoliService.selectByFilter(filter);
+//		
+//		if (searchList.size() == 0) {
+//			String ErrMsg = String.format("Non è stato trovato alcun oggetto con filtro %s", filter);
+//			logger.warn(ErrMsg);
+//			
+//			throw new NotFoundException(ErrMsg);
+//		} else {
+//			searchList.forEach(f -> f.setPrezzo(this.getPriceArt(f.getCodArt(), "", AuthHeader)));
+//			return new ResponseEntity<List<E>>(searchList, HttpStatus.OK);
+//		}
+//	}
 
-		logger.info("****** filtrato per " + filter + "!");
-		String AuthHeader = httpRequest.getHeader("Authorization");
 
-		List<E> searchList = articoliService.selectByFilter(filter);
-		
-		if (searchList.size() == 0) {
-			String ErrMsg = String.format("Non è stato trovato alcun oggetto con filtro %s", filter);
-			logger.warn(ErrMsg);
-			
-			throw new NotFoundException(ErrMsg);
-		} else {
-			searchList.forEach(f -> f.setPrezzo(this.getPriceArt(f.getCodArt(), "", AuthHeader)));
-			return new ResponseEntity<List<E>>(searchList, HttpStatus.OK);
-		}
-	}
-
-
-	private Double getPriceArt(String CodArt, String IdList, String Header) {
-		try {
-			Double Prezzo = (IdList.length() > 0) ? priceClient.getPriceArt(Header, CodArt, IdList) : 
-				priceClient.getDefPriceArt(Header, CodArt);
-				logger.info("Prezzo Articolo " + CodArt + ": " + Prezzo);
-
-				return Prezzo;
-		} catch(Exception ex) {
-			logger.error("Errore ottenimento prezzo: " + ex.getMessage());
-			return 0.0;
-		}
-	}
-	
-	
 	@GetMapping(value = "/cerca/{filter}", produces = "application/json")
-	public ResponseEntity<List<E>> genericSearchByFilter(@PathVariable("filter") String filter) throws NotFoundException {
+	public ResponseEntity<List<E>> genericSearchByFilter(@PathVariable("filter") String filter, HttpServletRequest httpRequest) throws NotFoundException {
 
-		logger.info("****** ricerca di filtrato per " + filter + "!");
-//		System.out.println(this.tipoArticolo.getClass().getName());
-//		System.out.println(this.tipoArticolo.getClass().getCanonicalName());
-//		System.out.println(this.tipoArticolo.getClass().getSimpleName());
-//		System.out.println(this.tipoArticolo.getClass().getTypeName());
+		logger.info("****** Ricerca di filtrata per " + filter + "!");
+
 		List<E> searchList = articoliService.selectByFilter(filter);
 		
 		if (searchList.size() == 0) {
-			String ErrMsg = String.format("Non è stato trovato alcun oggetto con filtro %s", filter);
-			logger.warn(ErrMsg);
-			throw new NotFoundException(ErrMsg);
+			String errMsg = String.format("Non è stato trovato alcun oggetto con filtro %s", filter);
+			logger.warn(errMsg);
+			
+			throw new NotFoundException(errMsg);
 		} else {
-			return new ResponseEntity<List<E>>(searchList, HttpStatus.OK);
+			String authHeader = httpRequest.getHeader("Authorization");
+			searchList.forEach(f -> f.setPrezzo(this.getPriceArt(f.getCodArt(), "", authHeader)));
 		}
-
+		
+		return new ResponseEntity<List<E>>(searchList, HttpStatus.OK);
 	}
 	
-	@GetMapping(value = "/aggiungi", produces = "application/json")
-	public ResponseEntity<?> genericAddObject(@Valid @RequestBody E object, BindingResult bindingResult) throws BindingException, DuplicateException {
+	@PostMapping(value = "/inserisci", produces = "application/json")
+	public ResponseEntity<?> genericAddObject(@Valid @RequestBody E object, HttpServletRequest httpRequest, BindingResult bindingResult) throws BindingException, DuplicateException {
 		
 		logger.info("****** inserimento record ******");
 		
@@ -121,16 +108,15 @@ public class ArticoliController<E extends Articoli, ID extends Serializable> {
 			throw new BindingException(MsgErr);
 		}
 			
-		//Disabilitare se si vuole gestire anche la modifica 
+		// Check se l'articolo già esiste 
 		Articoli checkArt =  articoliService.selByCodArt(object.getCodArt());
 
 		if (checkArt != null) {
-			String MsgErr = String.format("Articolo %s presente in anagrafica! "
-					+ "Impossibile utilizzare il metodo POST", object.getCodArt());	
+			String msgErr = String.format("Articolo e' presente in anagrafica! Impossibile utilizzare il metodo POST ", object.getCodArt());	
 			
-			logger.warn(MsgErr);
+			logger.warn(msgErr);
 			
-			throw new DuplicateException(MsgErr);
+			throw new DuplicateException(msgErr);
 		}
 		
 		HttpHeaders headers = new HttpHeaders();
@@ -142,55 +128,51 @@ public class ArticoliController<E extends Articoli, ID extends Serializable> {
 		articoliService.addOrUpdate(object);
 		
 		responseNode.put("code", HttpStatus.OK.toString());
-		responseNode.put("message", "Inserimento Articolo eseguita Con Successo");
+		responseNode.put("message", "Inserimento Articolo eseguito Con Successo");
 		
 		return new ResponseEntity<>(responseNode, headers, HttpStatus.CREATED);
 	}
 	
-	
-	@GetMapping(value = "/modifica", produces = "application/json")
-	public ResponseEntity<?> genericUpdateEntity(@Valid @RequestBody E articolo, BindingResult bindingResult) throws BindingException, NotFoundException {
+	@PostMapping(value = "/aggiorna/{codArt}", produces = "application/json")
+	public ResponseEntity<?> genericUpdateEntity(@Valid @RequestBody E object, @PathVariable("codArt") String codArt, BindingResult bindingResult) throws BindingException, NotFoundException {
 
-		logger.info("****** salvataggio record ******");
+		logger.info("****** modifica articolo con codice '" + codArt + "' ******");
 		
 		if (bindingResult.hasErrors()) {
-			String MsgErr = errMessage.getMessage(bindingResult.getFieldError(), LocaleContextHolder.getLocale());
+			String msgErr = errMessage.getMessage(bindingResult.getFieldError(), LocaleContextHolder.getLocale());
 			
-			logger.warn(MsgErr);
+			logger.warn(msgErr);
 
-			throw new BindingException(MsgErr);
+			throw new BindingException(msgErr);
 		}
 		
-		// Check se l'articolo esiste
-		Articoli checkArt =  articoliService.selByCodArt(articolo.getCodArt());
+		// Check se l'articolo non esiste
+		Articoli checkArt =  articoliService.selByCodArt(object.getCodArt());
 
 		if (checkArt == null) {
-			String MsgErr = String.format("Articolo %s non presente in anagrafica! "
-					+ "Impossibile utilizzare il metodo PUT", articolo.getCodArt());
+			String msgErr = String.format("Articolo %s non presente in anagrafica! Impossibile utilizzare il metodo PUT", object.getCodArt());
 			
-			logger.warn(MsgErr);
+			logger.warn(msgErr);
 			
-			throw new NotFoundException(MsgErr);
+			throw new NotFoundException(msgErr);
 		}
-		
 		
 		HttpHeaders headers = new HttpHeaders();
 		ObjectMapper mapper = new ObjectMapper();
 		
 		headers.setContentType(MediaType.APPLICATION_JSON);
-
 		ObjectNode responseNode = mapper.createObjectNode();
 
-		articoliService.addOrUpdate(articolo);
+		articoliService.addOrUpdate(object);
 		
 		responseNode.put("code", HttpStatus.OK.toString());
-		responseNode.put("message", "Modifica Articolo " + articolo.getCodArt() + " Eseguita Con Successo");
+		responseNode.put("message", "Modifica Articolo " + object.getCodArt() + " Eseguita Con Successo");
 
 		return new ResponseEntity<>(responseNode, headers, HttpStatus.CREATED);
 	}
 	
-	@GetMapping(value = "/elimina/{codArt}", produces = "application/json")
-	public ResponseEntity<?> deleteArt(@PathVariable("codart") String codArt) throws  NotFoundException {
+	@GetMapping(value = "/elimina/codice/{codArt}", produces = "application/json")
+	public ResponseEntity<?> deleteArtByCodArt(@PathVariable("codart") String codArt) throws  NotFoundException {
 		logger.info("Eliminiamo l'articolo con codice " + codArt);
 
 		HttpHeaders headers = new HttpHeaders();
@@ -220,6 +202,7 @@ public class ArticoliController<E extends Articoli, ID extends Serializable> {
 	
 	
 	
+
 	
 	
 	
@@ -240,7 +223,18 @@ public class ArticoliController<E extends Articoli, ID extends Serializable> {
 	
 	
 	
-	
+	private Double getPriceArt(String CodArt, String IdList, String Header) {
+		try {
+			Double Prezzo = (IdList.length() > 0) ? priceClient.getPriceArt(Header, CodArt, IdList) : 
+				priceClient.getDefPriceArt(Header, CodArt);
+				logger.info("Prezzo Articolo " + CodArt + ": " + Prezzo);
+
+				return Prezzo;
+		} catch(Exception ex) {
+			logger.error("Errore ottenimento prezzo: " + ex.getMessage());
+			return 0.0;
+		}
+	}
 	
 
 //	@Autowired

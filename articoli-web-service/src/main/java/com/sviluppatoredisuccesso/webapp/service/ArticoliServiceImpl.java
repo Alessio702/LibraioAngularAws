@@ -26,12 +26,12 @@ public abstract class ArticoliServiceImpl<E extends Articoli, ID extends Seriali
 	
 	@Override
 	public List<Articoli> selectByDescrizione(String descrizione) {
-		return null;
+		return articoliRepository.selByDescrizioneLike(descrizione);
 	}
 
 	@Override
 	public List<E> selectByFilter(String filter) {
-		return articoliRepository.selectByObjectAndFilter(filter);
+		return articoliRepository.selectByFilter(filter);
 	}
 	
 	@Override

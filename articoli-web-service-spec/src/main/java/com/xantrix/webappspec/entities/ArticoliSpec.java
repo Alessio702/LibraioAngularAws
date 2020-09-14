@@ -1,6 +1,7 @@
 package com.xantrix.webappspec.entities;
 
 import javax.persistence.Column;
+import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
@@ -10,6 +11,7 @@ import com.sviluppatoredisuccesso.webapp.entities.Articoli;
 
 
 @Entity
+@DiscriminatorValue("libro")
 @Table(name = "AWS_ProvaSpec")
 public class ArticoliSpec extends Articoli {
 
