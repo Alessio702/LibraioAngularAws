@@ -62,7 +62,7 @@
 			<artifactId>postgresql</artifactId>
 			<scope>runtime</scope>
 		</dependency>
-		
+
 		<!-- feign -->
 		<dependency>
 			<groupId>org.springframework.cloud</groupId>

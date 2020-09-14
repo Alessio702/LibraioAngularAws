@@ -60,6 +60,4 @@ public abstract class ArticoliServiceImpl<E extends Articoli, ID extends Seriali
 	}
 	
 	
-
-	
 }

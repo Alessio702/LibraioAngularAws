@@ -8,4 +8,5 @@ import com.xantrix.webappspec.entities.ArticoliSpec;
 @NoRepositoryBean
 public interface ArticoliRepositorySpec extends ArticoliRepository<ArticoliSpec> {
 	
+
 }

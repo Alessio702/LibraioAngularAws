@@ -202,26 +202,6 @@ public class ArticoliController<E extends Articoli, ID extends Serializable> {
 	
 	
 	
-
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
 	
 	private Double getPriceArt(String CodArt, String IdList, String Header) {
 		try {
@@ -260,6 +240,24 @@ public class ArticoliController<E extends Articoli, ID extends Serializable> {
 //
 //			logger.warn(ErrMsg);
 //
+//	// ------------------- Ricerca Per Barcode ------------------------------------
+//	@GetMapping(value = "/cerca/ean/{barcode}", produces = "application/json")
+//	public ResponseEntity<Articoli> listArtByEan(@PathVariable("barcode") String Barcode, HttpServletRequest httpRequest)
+//				
+//	{
+//		logger.info("****** Otteniamo l'articolo con barcode " + Barcode + " *******");
+//		
+//		String AuthHeader = httpRequest.getHeader("Authorization");
+//		
+//		Articoli articolo;
+//		Barcode Ean = barcodeService.SelByBarcode(Barcode);
+//		
+//		if (Ean == null)
+//		{
+//			String ErrMsg = String.format("Il barcode %s non è stato trovato!", Barcode);
+//			
+//			logger.warn(ErrMsg);
+//			
 //			throw new NotFoundException(ErrMsg);
 //			//return new ResponseEntity<Articoli>(HttpStatus.NOT_FOUND);
 //		}
@@ -293,6 +291,31 @@ public class ArticoliController<E extends Articoli, ID extends Serializable> {
 //		Disabilitare se si vuole gestire anche la modifica 
 //		Articoli checkArt =  articoliService.SelByCodArt(articolo.getCodArt());
 //
+//		
+//		return new ResponseEntity<Articoli>(articolo, HttpStatus.OK);
+//		
+//	}
+//	
+//	// ------------------- INSERIMENTO ARTICOLO ------------------------------------
+//	@PostMapping(value = "/inserisci", produces = "application/json")
+//	public ResponseEntity<?> createArt(@Valid @RequestBody Articoli articolo, BindingResult bindingResult)
+//		throws BindingException, DuplicateException
+//	{
+//		logger.info("Salviamo l'articolo con codice " + articolo.getCodArt());
+//		
+//		//controllo validità dati articolo
+//		if (bindingResult.hasErrors())
+//		{
+//			String MsgErr = errMessage.getMessage(bindingResult.getFieldError(), LocaleContextHolder.getLocale());
+//			
+//			logger.warn(MsgErr);
+//			
+//			throw new BindingException(MsgErr);
+//		}
+//		
+//		//Disabilitare se si vuole gestire anche la modifica 
+//		Articoli checkArt =  articoliService.SelByCodArt(articolo.getCodArt());
+//		
 //		if (checkArt != null)
 //		{
 //			String MsgErr = String.format("Articolo %s presente in anagrafica! "
@@ -315,16 +338,40 @@ public class ArticoliController<E extends Articoli, ID extends Serializable> {
 //	}
 //
 //	------------------- MODIFICA ARTICOLO ------------------------------------
+//			
+//			logger.warn(MsgErr);
+//			
+//			throw new DuplicateException(MsgErr);
+//		}
+//		
+//		articoliService.InsArticolo(articolo);
+//		
+//		ObjectMapper mapper = new ObjectMapper();
+//		ObjectNode responseNode = mapper.createObjectNode();
+//		
+//		responseNode.put("code", HttpStatus.OK.toString());
+//		responseNode.put("message", "Inserimento Articolo " + articolo.getCodArt() + " Eseguita Con Successo");
+//		
+//		return new ResponseEntity<>(responseNode, new HttpHeaders(), HttpStatus.CREATED);
+//	}
+//	
+//	// ------------------- MODIFICA ARTICOLO ------------------------------------
 //	@RequestMapping(value = "/modifica", method = RequestMethod.PUT, produces = "application/json")
 //	public ResponseEntity<?> updateArt(@Valid @RequestBody Articoli articolo, BindingResult bindingResult)
 //			throws BindingException,NotFoundException 
 //	{
 //		logger.info("Modifichiamo l'articolo con codice " + articolo.getCodArt());
+
 //
 //		if (bindingResult.hasErrors())
 //		{
 //			String MsgErr = errMessage.getMessage(bindingResult.getFieldError(), LocaleContextHolder.getLocale());
 //
+//		
+//		if (bindingResult.hasErrors())
+//		{
+//			String MsgErr = errMessage.getMessage(bindingResult.getFieldError(), LocaleContextHolder.getLocale());
+//			
 //			logger.warn(MsgErr);
 //
 //			throw new BindingException(MsgErr);
@@ -381,6 +428,52 @@ public class ArticoliController<E extends Articoli, ID extends Serializable> {
 //
 //		return new ResponseEntity<>(responseNode, new HttpHeaders(), HttpStatus.OK);
 //
+//	}
+//			
+//			logger.warn(MsgErr);
+//			
+//			throw new NotFoundException(MsgErr);
+//		}
+//		
+//		articoliService.InsArticolo(articolo);
+//		
+//		ObjectMapper mapper = new ObjectMapper();
+//		ObjectNode responseNode = mapper.createObjectNode();
+//		
+//		responseNode.put("code", HttpStatus.OK.toString());
+//		responseNode.put("message", "Modifica Articolo " + articolo.getCodArt() + " Eseguita Con Successo");
+//		
+//		return new ResponseEntity<>(responseNode, new HttpHeaders(), HttpStatus.CREATED);
+//	}
+//	
+//	// ------------------- ELIMINAZIONE ARTICOLO ------------------------------------
+//	@RequestMapping(value = "/elimina/{codart}", method = RequestMethod.DELETE, produces = "application/json" )
+//	public ResponseEntity<?> deleteArt(@PathVariable("codart") String CodArt)
+//		 
+//	{
+//		logger.info("Eliminiamo l'articolo con codice " + CodArt);
+//		
+//		Articoli articolo = articoliService.SelByCodArt(CodArt);
+//		
+//		if (articolo == null)
+//		{
+//			String MsgErr = String.format("Articolo %s non presente in anagrafica!",CodArt);
+//			
+//			logger.warn(MsgErr);
+//			
+//			throw new NotFoundException(MsgErr);
+//		}
+//		
+//		articoliService.DelArticolo(articolo);
+//		
+//		ObjectMapper mapper = new ObjectMapper();
+//		ObjectNode responseNode = mapper.createObjectNode();
+//		
+//		responseNode.put("code", HttpStatus.OK.toString());
+//		responseNode.put("message", "Eliminazione Articolo " + CodArt + " Eseguita Con Successo");
+//		
+//		return new ResponseEntity<>(responseNode, new HttpHeaders(), HttpStatus.OK);
+//				
 //	}
 
 }

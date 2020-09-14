@@ -16,8 +16,8 @@ import javax.validation.constraints.Size;
 
 @Entity
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
-@DiscriminatorColumn(name = "categoria", discriminatorType = DiscriminatorType.STRING)
-@Table(name = "AWS_ARTICOLI2")
+@DiscriminatorColumn(name = "categoria" ,discriminatorType = DiscriminatorType.STRING)
+@Table(name = "ARTICOLI2")
 public class Articoli implements Serializable {
 	private static final long serialVersionUID = 291353626011036772L;
 

@@ -6,8 +6,4 @@ import com.xantrix.webappspec.entities.ArticoliSpec;
 public class ArticoliControllerSpec extends ArticoliController<ArticoliSpec, String> {
 
 	
-
-
-	
-	
 }

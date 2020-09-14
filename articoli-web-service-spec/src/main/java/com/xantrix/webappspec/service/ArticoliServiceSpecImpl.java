@@ -18,5 +18,4 @@ public class ArticoliServiceSpecImpl extends ArticoliServiceImpl<ArticoliSpec, S
 //	}
 //	
 
-	
 }

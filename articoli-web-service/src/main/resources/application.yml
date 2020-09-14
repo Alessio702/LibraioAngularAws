@@ -9,7 +9,6 @@ spring:
   application:
     name: ProductsWebService
     
-    
 # ==============================================================
 # = Proprietà Fonte Dati PostgreSQL
 # ==============================================================
@@ -34,5 +33,3 @@ spring:
   main:
     allow-bean-definition-overriding: true
     
-
-

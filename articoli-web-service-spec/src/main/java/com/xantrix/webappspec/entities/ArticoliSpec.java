@@ -3,28 +3,18 @@ package com.xantrix.webappspec.entities;
 import javax.persistence.Column;
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.Table;
 
 import com.sviluppatoredisuccesso.webapp.entities.Articoli;
 
-
 @Entity
 @DiscriminatorValue("libro")
-@Table(name = "AWS_ProvaSpec")
+//@Table(name = "AWS_ProvaSpec")
 public class ArticoliSpec extends Articoli {
 
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 8717908017460090411L;
-
-	
-	@Id
-	@Column(name = "IDSPEC")
-	@GeneratedValue
-	private String idSpec;
 	
 	
 	@Column(name = "NOME")
@@ -34,15 +24,6 @@ public class ArticoliSpec extends Articoli {
 	private String redazione;
 
 
-	
-	
-	public String getIdSpec() {
-		return idSpec;
-	}
-
-	public void setIdSpec(String idSpec) {
-		this.idSpec = idSpec;
-	}
 
 	public String getNome() {
 		return nome;
@@ -63,4 +44,5 @@ public class ArticoliSpec extends Articoli {
 	public static long getSerialversionuid() {
 		return serialVersionUID;
 	}
+
 }
