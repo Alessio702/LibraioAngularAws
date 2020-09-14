@@ -11,7 +11,7 @@ spring:
   application:
     name: PriceArtService
 # ==============================================================
-# = DBMS PostgreSQL Parameters
+# = Proprietà Fonte Dati PostgreSQL
 # ==============================================================
   datasource:
     initialization-mode: always
@@ -29,4 +29,3 @@ spring:
           lob:
             non_contextual_creation: true
     show-sql: true
-
