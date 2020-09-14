@@ -1,6 +1,7 @@
 package com.sviluppatoredisuccesso.webapp.controller;
 
 import java.io.Serializable;
+import java.lang.reflect.ParameterizedType;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -39,11 +40,15 @@ import com.sviluppatoredisuccesso.webapp.service.ArticoliService;
 @RestController
 @CrossOrigin
 @RequestMapping("api/articoli")
-public class ArticoliController<E extends Articoli, ID extends Serializable> {
+public class ArticoliController<E extends Articoli, G extends ArticoliDto, ID extends Serializable> {
 	
 	private static final Logger logger = LoggerFactory.getLogger(ArticoliController.class);
-
-
+	
+	@SuppressWarnings("unchecked")
+	public Class<G> getClassType() {
+		return (Class<G>) ((ParameterizedType) getClass().getSuperclass().getGenericSuperclass()).getActualTypeArguments()[1].getClass();
+	}
+	
 	@Autowired
 	private PriceClient priceClient;
 	
@@ -56,15 +61,15 @@ public class ArticoliController<E extends Articoli, ID extends Serializable> {
 	@Autowired
 	private ModelMapper modelMapper;
 
-	
+
 	
 	@GetMapping(value = "/cerca/codice/{codArt}", produces = "application/json")
-	public ResponseEntity<ArticoliDto> genericSearchByCodArt(@PathVariable("codArt") String codArt, HttpServletRequest httpRequest) throws NotFoundException {
+	public ResponseEntity<G> genericSearchByCodArt(@PathVariable("codArt") String codArt, HttpServletRequest httpRequest) throws NotFoundException {
 
 		logger.info("****** Ricerca di filtrata per codice: " + codArt + "!");
 
 		E articolo = articoliService.selectByCodArt(codArt);
-		ArticoliDto dtoObject;
+		G dtoObject;
 		
 		if (articolo == null) {
 			String errMsg = String.format("Non è stato trovato alcun articolo con codice: ", codArt);
@@ -73,21 +78,21 @@ public class ArticoliController<E extends Articoli, ID extends Serializable> {
 			throw new NotFoundException(errMsg);
 		} else {
 			String authHeader = httpRequest.getHeader("Authorization");
-			dtoObject = modelMapper.map(articolo, ArticoliDto.class);
+			dtoObject = modelMapper.map(articolo, getClassType());
 			
 			dtoObject.setPrezzo(this.getPriceArt(codArt, "", authHeader));
 		}
 		
-		return new ResponseEntity<ArticoliDto>(dtoObject, HttpStatus.OK);
+		return new ResponseEntity<G>(dtoObject, HttpStatus.OK);
 	}
 	
 	@GetMapping(value = "/cerca/{filter}", produces = "application/json")
-	public ResponseEntity<List<ArticoliDto>> genericSearchByFilter(@PathVariable("filter") String filter, HttpServletRequest httpRequest) throws NotFoundException {
+	public ResponseEntity<List<G>> genericSearchByFilter(@PathVariable("filter") String filter, HttpServletRequest httpRequest) throws NotFoundException {
 
 		logger.info("****** Ricerca di filtrata per " + filter + "!");
 
 		List<E> searchList = articoliService.selectByFilter(filter);
-		List<ArticoliDto> listDto = new ArrayList<ArticoliDto>();
+		List<G> listDto = new ArrayList<G>();
 		
 		if (searchList.size() == 0) {
 			String errMsg = String.format("Non è stato trovato alcun oggetto con filtro %s", filter);
@@ -96,12 +101,12 @@ public class ArticoliController<E extends Articoli, ID extends Serializable> {
 			throw new NotFoundException(errMsg);
 		} else {
 			String authHeader = httpRequest.getHeader("Authorization");
-			listDto = searchList.stream().map(source -> modelMapper.map(source, ArticoliDto.class)).collect(Collectors.toList());
+			listDto = searchList.stream().map(source -> modelMapper.map(source, getClassType())).collect(Collectors.toList());
 			
 			searchList.forEach(f -> f.setPrezzo(this.getPriceArt(f.getCodArt(), "", authHeader)));
 		}
 		
-		return new ResponseEntity<List<ArticoliDto>>(listDto, HttpStatus.OK);
+		return new ResponseEntity<List<G>>(listDto, HttpStatus.OK);
 	}
 	
 	@PostMapping(value = "/inserisci", produces = "application/json")
