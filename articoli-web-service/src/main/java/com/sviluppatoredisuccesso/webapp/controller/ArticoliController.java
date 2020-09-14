@@ -41,16 +41,15 @@ import com.sviluppatoredisuccesso.webapp.service.ArticoliService;
 @CrossOrigin
 @RequestMapping("api/articoli")
 public class ArticoliController<E extends Articoli, G extends ArticoliDto, ID extends Serializable> {
-	
+
 	private static final Logger logger = LoggerFactory.getLogger(ArticoliController.class);
-	
-	
+
 	@SuppressWarnings("unchecked")
 	public Class<G> getClassType() {
-		return (Class<G>) ((ParameterizedType) getClass().getSuperclass().getGenericSuperclass()).getActualTypeArguments()[1].getClass();
+		return (Class<G>) ((ParameterizedType) getClass().getSuperclass().getGenericSuperclass())
+				.getActualTypeArguments()[1].getClass();
 	}
-	
-	
+
 //	<!-- B -->
 //	private final TypeToken<G> typeToken = new TypeToken<G>(getClass()) { };
 //	private final Type type = typeToken.getType();
@@ -58,7 +57,7 @@ public class ArticoliController<E extends Articoli, G extends ArticoliDto, ID ex
 //	public Type getClassType2() {
 //		return type;
 //	}
-	
+
 //	<!-- C -->
 //	@SuppressWarnings("unchecked")
 //	private Class<G> getGenericTypeClass() {
@@ -72,146 +71,149 @@ public class ArticoliController<E extends Articoli, G extends ArticoliDto, ID ex
 //        }
 //    }
 
-	
-	
 	@Autowired
 	private PriceClient priceClient;
-	
+
 	@Autowired
 	private ArticoliService<E, ID> articoliService;
-	
+
 	@Autowired
 	private ResourceBundleMessageSource errMessage;
 
 	@Autowired
 	private ModelMapper modelMapper;
 
-
-	
 	@GetMapping(value = "/cerca/codice/{codArt}", produces = "application/json")
-	public ResponseEntity<G> genericSearchByCodArt(@PathVariable("codArt") String codArt, HttpServletRequest httpRequest) throws NotFoundException {
+	public ResponseEntity<G> genericSearchByCodArt(@PathVariable("codArt") String codArt,
+			HttpServletRequest httpRequest) throws NotFoundException {
 
 		logger.info("****** Ricerca di filtrata per codice: " + codArt + "!");
 
 		E articolo = articoliService.selectByCodArt(codArt);
 		G dtoObject;
-		
+
 		if (articolo == null) {
 			String errMsg = String.format("Non è stato trovato alcun articolo con codice: ", codArt);
 			logger.warn(errMsg);
-			
+
 			throw new NotFoundException(errMsg);
 		} else {
 			String authHeader = httpRequest.getHeader("Authorization");
 			dtoObject = modelMapper.map(articolo, getClassType());
-			
+
 			dtoObject.setPrezzo(this.getPriceArt(codArt, "", authHeader));
 		}
-		
+
 		return new ResponseEntity<G>(dtoObject, HttpStatus.OK);
 	}
-	
+
 	@GetMapping(value = "/cerca/{filter}", produces = "application/json")
-	public ResponseEntity<List<G>> genericSearchByFilter(@PathVariable("filter") String filter, HttpServletRequest httpRequest) throws NotFoundException {
+	public ResponseEntity<List<G>> genericSearchByFilter(@PathVariable("filter") String filter,
+			HttpServletRequest httpRequest) throws NotFoundException {
 
 		logger.info("****** Ricerca di filtrata per " + filter + "!");
 
 		List<E> searchList = articoliService.selectByFilter(filter);
 		List<G> listDto = new ArrayList<G>();
-		
+
 		if (searchList.size() == 0) {
 			String errMsg = String.format("Non è stato trovato alcun oggetto con filtro %s", filter);
 			logger.warn(errMsg);
-			
+
 			throw new NotFoundException(errMsg);
 		} else {
 			String authHeader = httpRequest.getHeader("Authorization");
-			listDto = searchList.stream().map(source -> modelMapper.map(source, getClassType())).collect(Collectors.toList());
-			
+			listDto = searchList.stream().map(source -> modelMapper.map(source, getClassType()))
+					.collect(Collectors.toList());
+
 			searchList.forEach(f -> f.setPrezzo(this.getPriceArt(f.getCodArt(), "", authHeader)));
 		}
-		
+
 		return new ResponseEntity<List<G>>(listDto, HttpStatus.OK);
 	}
-	
+
 	@PostMapping(value = "/inserisci", produces = "application/json")
-	public ResponseEntity<?> genericAddObject(@Valid @RequestBody E object, HttpServletRequest httpRequest, BindingResult bindingResult) throws BindingException, DuplicateException {
-		
+	public ResponseEntity<?> genericAddObject(@Valid @RequestBody E object, HttpServletRequest httpRequest,
+			BindingResult bindingResult) throws BindingException, DuplicateException {
+
 		logger.info("****** inserimento record ******");
-		
+
 		if (bindingResult.hasErrors()) {
 			String MsgErr = errMessage.getMessage(bindingResult.getFieldError(), LocaleContextHolder.getLocale());
-			
+
 			logger.warn(MsgErr);
-			
+
 			throw new BindingException(MsgErr);
 		}
-			
-		// Check se l'articolo già esiste 
-		E checkArt =  articoliService.selectByCodArt(object.getCodArt());
+
+		// Check se l'articolo già esiste
+		E checkArt = articoliService.selectByCodArt(object.getCodArt());
 
 		if (checkArt != null) {
-			String msgErr = String.format("Articolo e' presente in anagrafica! Impossibile utilizzare il metodo POST ", object.getCodArt());	
-			
+			String msgErr = String.format("Articolo e' presente in anagrafica! Impossibile utilizzare il metodo POST ",
+					object.getCodArt());
+
 			logger.warn(msgErr);
-			
+
 			throw new DuplicateException(msgErr);
 		}
-		
+
 		HttpHeaders headers = new HttpHeaders();
 		ObjectMapper mapper = new ObjectMapper();
-		
+
 		headers.setContentType(MediaType.APPLICATION_JSON);
 		ObjectNode responseNode = mapper.createObjectNode();
-		
+
 		articoliService.addOrUpdate(object);
-		
+
 		responseNode.put("code", HttpStatus.OK.toString());
 		responseNode.put("message", "Inserimento Articolo eseguito Con Successo");
-		
+
 		return new ResponseEntity<>(responseNode, headers, HttpStatus.CREATED);
 	}
-	
+
 	@PostMapping(value = "/aggiorna/{codArt}", produces = "application/json")
-	public ResponseEntity<?> genericUpdateEntity(@Valid @RequestBody E object, @PathVariable("codArt") String codArt, BindingResult bindingResult) throws BindingException, NotFoundException {
+	public ResponseEntity<?> genericUpdateEntity(@Valid @RequestBody E object, @PathVariable("codArt") String codArt,
+			BindingResult bindingResult) throws BindingException, NotFoundException {
 
 		logger.info("****** modifica articolo con codice '" + codArt + "' ******");
-		
+
 		if (bindingResult.hasErrors()) {
 			String msgErr = errMessage.getMessage(bindingResult.getFieldError(), LocaleContextHolder.getLocale());
-			
+
 			logger.warn(msgErr);
 
 			throw new BindingException(msgErr);
 		}
-		
+
 		// Check se l'articolo non esiste
-		E checkArt =  articoliService.selectByCodArt(object.getCodArt());
+		E checkArt = articoliService.selectByCodArt(object.getCodArt());
 
 		if (checkArt == null) {
-			String msgErr = String.format("Articolo %s non presente in anagrafica! Impossibile utilizzare il metodo PUT", object.getCodArt());
-			
+			String msgErr = String.format(
+					"Articolo %s non presente in anagrafica! Impossibile utilizzare il metodo PUT", object.getCodArt());
+
 			logger.warn(msgErr);
-			
+
 			throw new NotFoundException(msgErr);
 		}
-		
+
 		HttpHeaders headers = new HttpHeaders();
 		ObjectMapper mapper = new ObjectMapper();
-		
+
 		headers.setContentType(MediaType.APPLICATION_JSON);
 		ObjectNode responseNode = mapper.createObjectNode();
 
 		articoliService.addOrUpdate(object);
-		
+
 		responseNode.put("code", HttpStatus.OK.toString());
 		responseNode.put("message", "Modifica Articolo " + object.getCodArt() + " Eseguita Con Successo");
 
 		return new ResponseEntity<>(responseNode, headers, HttpStatus.CREATED);
 	}
-	
+
 	@GetMapping(value = "/elimina/codice/{codArt}", produces = "application/json")
-	public ResponseEntity<?> genericDeleteByCodArt(@PathVariable("codart") String codArt) throws  NotFoundException {
+	public ResponseEntity<?> genericDeleteByCodArt(@PathVariable("codart") String codArt) throws NotFoundException {
 		logger.info("Eliminiamo l'articolo con codice " + codArt);
 
 		HttpHeaders headers = new HttpHeaders();
@@ -225,9 +227,9 @@ public class ArticoliController<E extends Articoli, G extends ArticoliDto, ID ex
 
 		if (articolo == null) {
 			String MsgErr = String.format("Articolo %s non presente in anagrafica!", codArt);
-			
+
 			logger.warn(MsgErr);
-			
+
 			throw new NotFoundException(MsgErr);
 		}
 
@@ -238,23 +240,19 @@ public class ArticoliController<E extends Articoli, G extends ArticoliDto, ID ex
 
 		return new ResponseEntity<>(responseNode, headers, HttpStatus.OK);
 	}
-	
-	
-	
-	
+
 	private Double getPriceArt(String CodArt, String IdList, String Header) {
 		try {
-			Double Prezzo = (IdList.length() > 0) ? priceClient.getPriceArt(Header, CodArt, IdList) : 
-				priceClient.getDefPriceArt(Header, CodArt);
-				logger.info("Prezzo Articolo " + CodArt + ": " + Prezzo);
+			Double Prezzo = (IdList.length() > 0) ? priceClient.getPriceArt(Header, CodArt, IdList)
+					: priceClient.getDefPriceArt(Header, CodArt);
+			logger.info("Prezzo Articolo " + CodArt + ": " + Prezzo);
 
-				return Prezzo;
-		} catch(Exception ex) {
+			return Prezzo;
+		} catch (Exception ex) {
 			logger.error("Errore ottenimento prezzo: " + ex.getMessage());
 			return 0.0;
 		}
 	}
-	
 
 //	@Autowired
 //	private BarcodeService barcodeService;
