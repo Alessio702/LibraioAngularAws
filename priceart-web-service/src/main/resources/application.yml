@@ -10,13 +10,13 @@ spring:
     active: list1
   application:
     name: PriceArtService
-       
+
 # ==============================================================
 # = Proprietà Fonte Dati PostgreSQL
 # ==============================================================
   datasource:
     initialization-mode: always
-    password: 07139
+    password: postgres
     platform: postgres
     url: jdbc:postgresql://localhost:5000/postgres
     username: postgres
@@ -30,3 +30,4 @@ spring:
           lob:
             non_contextual_creation: true
     show-sql: true
+    generate-ddl:  true

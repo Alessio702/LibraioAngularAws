@@ -14,16 +14,16 @@ import com.sviluppatoredisuccesso.webapp.entities.Articoli;
 
 public interface ArticoliRepository<E extends Articoli> extends JpaRepository<E, String> 
 {
-	@Query(value = "SELECT * FROM ARTICOLI WHERE DESCRIZIONE LIKE :desArt", nativeQuery = true)
+	@Query(value = "SELECT * FROM ARTICOLI2 WHERE DESCRIZIONE LIKE :desArt", nativeQuery = true)
 	List<Articoli> selByDescrizioneLike(@Param("desArt") String descrizione);
 
 //	Articoli findByCodArt(String codArt);
 
 	
-	@Query(value = "SELECT t FROM ARTICOLI t WHERE t.descrizione LIKE :filter")
+	@Query(value = "SELECT t FROM ARTICOLI2 t WHERE t.descrizione LIKE :filter")
 	List<E> selectByFilter(@Param("filter") String filter);
 	
-	@Query(value = "SELECT t FROM ARTICOLI t WHERE t.codArt LIKE :codArt")
+	@Query(value = "SELECT t FROM ARTICOLI2 t WHERE t.codArt LIKE :codArt")
 	E selectByCodArt(@Param("codArt") String codArt);
 	
 	

@@ -15,7 +15,7 @@ spring:
 # ==============================================================
   datasource:
     initialization-mode: always
-    password: 07139
+    password: postgres
     platform: postgres
     url: jdbc:postgresql://localhost:5000/postgres
     username: postgres
