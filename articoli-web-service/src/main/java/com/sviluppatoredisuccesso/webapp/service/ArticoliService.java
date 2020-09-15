@@ -1,9 +1,12 @@
 package com.sviluppatoredisuccesso.webapp.service;
 
+
 import java.io.Serializable;
+
 import java.util.List;
 
 import com.sviluppatoredisuccesso.webapp.entities.Articoli;
+
 
 public interface ArticoliService<E extends Articoli, ID extends Serializable>
 {

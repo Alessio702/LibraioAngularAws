@@ -2,11 +2,14 @@ package com.sviluppatoredisuccesso.webapp.repository;
 
 import java.util.List;
 
+
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+
 import org.springframework.data.repository.query.Param;
 
 import com.sviluppatoredisuccesso.webapp.entities.Articoli;
+
 
 
 public interface ArticoliRepository<E extends Articoli> extends JpaRepository<E, String> 
@@ -26,4 +29,5 @@ public interface ArticoliRepository<E extends Articoli> extends JpaRepository<E,
 	
 //	@Query(value = "SELECT * FROM LIBRO WHERE " + filter + " LIKE :filter", nativeQuery = true)
 //	List<Object> SelByFilterLike(@Param("filter") String filter);
+
 }

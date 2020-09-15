@@ -3,11 +3,13 @@
 # ==============================================================
 
 server:
+
   port: 5001
   
 spring:
   application:
     name: ProductsWebService
+
     
 # ==============================================================
 # = Proprietà Fonte Dati PostgreSQL

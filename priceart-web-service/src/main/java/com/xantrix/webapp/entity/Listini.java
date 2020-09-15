@@ -19,6 +19,7 @@ import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.Data;
 
 @Entity
+
 @Table(name = "Aws_listini")
 @Data
 public class Listini implements Serializable {

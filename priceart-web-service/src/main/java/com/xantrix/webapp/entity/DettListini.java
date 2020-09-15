@@ -22,6 +22,7 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 @Entity
+
 @Table(name = "Aws_dettlistini")
 @Data
 public class DettListini implements Serializable {

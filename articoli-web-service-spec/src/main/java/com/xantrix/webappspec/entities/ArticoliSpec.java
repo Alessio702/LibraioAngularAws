@@ -1,5 +1,6 @@
 package com.xantrix.webappspec.entities;
 
+
 import javax.persistence.Column;
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
@@ -11,11 +12,13 @@ import com.sviluppatoredisuccesso.webapp.entities.Articoli;
 //@Table(name = "AWS_ProvaSpec")
 public class ArticoliSpec extends Articoli {
 
+
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 8717908017460090411L;
 	
+
 	
 	@Column(name = "NOME")
 	private String nome;
@@ -44,5 +47,4 @@ public class ArticoliSpec extends Articoli {
 	public static long getSerialversionuid() {
 		return serialVersionUID;
 	}
-
 }

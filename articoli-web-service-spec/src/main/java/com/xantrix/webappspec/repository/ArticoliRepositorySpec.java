@@ -1,5 +1,6 @@
 package com.xantrix.webappspec.repository;
 
+
 import org.springframework.data.repository.NoRepositoryBean;
 
 import com.sviluppatoredisuccesso.webapp.repository.ArticoliRepository;

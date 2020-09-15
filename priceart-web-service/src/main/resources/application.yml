@@ -10,6 +10,7 @@ spring:
     active: list1
   application:
     name: PriceArtService
+       
 # ==============================================================
 # = Proprietà Fonte Dati PostgreSQL
 # ==============================================================
@@ -29,6 +30,4 @@ spring:
           lob:
             non_contextual_creation: true
     show-sql: true
-  main:
-    allow-bean-definition-overriding: true
-
+    generate-ddl:  true
