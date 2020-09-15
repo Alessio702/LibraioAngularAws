@@ -111,7 +111,7 @@ public class ArticoliController<E extends Articoli, G extends ArticoliDto, ID ex
 		return new ResponseEntity<G>(dtoObject, HttpStatus.OK);
 	}
 
-	@GetMapping(value = "/cerca/{filter}", produces = "application/json")
+	@GetMapping(value = "/cerca/descrizione/{filter}", produces = "application/json")
 	public ResponseEntity<List<G>> genericSearchByFilter(@PathVariable("filter") String filter,
 			HttpServletRequest httpRequest) throws NotFoundException {
 

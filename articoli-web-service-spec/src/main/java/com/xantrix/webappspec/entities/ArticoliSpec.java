@@ -9,7 +9,6 @@ import com.sviluppatoredisuccesso.webapp.entities.Articoli;
 
 @Entity
 @DiscriminatorValue("libro")
-//@Table(name = "AWS_ProvaSpec")
 public class ArticoliSpec extends Articoli {
 
 

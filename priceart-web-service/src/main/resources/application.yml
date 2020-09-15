@@ -16,9 +16,9 @@ spring:
 # ==============================================================
   datasource:
     initialization-mode: always
-    password: 07139
+    password: Alex1993!
     platform: postgres
-    url: jdbc:postgresql://localhost:5000/postgres
+    url: jdbc:postgresql://localhost:5433/Alphashop
     username: postgres
   jpa:
     hibernate:

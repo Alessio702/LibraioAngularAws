@@ -10,7 +10,6 @@ import com.sviluppatoredisuccesso.webapp.entities.Articoli;
 
 public interface ArticoliService<E extends Articoli, ID extends Serializable>
 {
-	public abstract List<Articoli> selectByDescrizione(String descrizione);
 	
 	public abstract List<E> selectByFilter(String filter);
 	
@@ -24,11 +23,4 @@ public interface ArticoliService<E extends Articoli, ID extends Serializable>
 	
 	public abstract void deleteObjectById(String codArt);
 	
-//	public Iterable<T> SelTutti();
-	
-//	public List<T> SelByDescrizione(String descrizione, Pageable pageable);
-	
-//	public void DelArticolo(T articolo);
-//	
-//	public void InsArticolo(T articolo);
 }

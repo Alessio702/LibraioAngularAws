@@ -19,16 +19,7 @@ public abstract class ArticoliServiceImpl<E extends Articoli, ID extends Seriali
 	@Autowired
 	private ArticoliRepository<E> articoliRepository;
 	
-//	@Autowired
-//	public ArticoliServiceImpl(ArticoliRepository<E> articoliRepository) {
-//		this.articoliRepository = articoliRepository;
-//	}
-	
-	
-	@Override
-	public List<Articoli> selectByDescrizione(String descrizione) {
-		return articoliRepository.selByDescrizioneLike(descrizione);
-	}
+
 
 	@Override
 	public List<E> selectByFilter(String filter) {
