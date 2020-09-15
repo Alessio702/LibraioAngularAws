@@ -14,16 +14,15 @@ spring:
 # ==============================================================
   datasource:
     initialization-mode: always
-    password: ${RDS_PASSWORD:07139}
+    password: Alex1993!
     platform: postgres
-    url: jdbc:postgresql://localhost:5000/postgres
-    username: ${RDS_USERNAME:postgres}
+    url: jdbc:postgresql://localhost:5433/Alphashop
+    username: postgres
   jpa:
     hibernate:
       ddl-auto: update
     properties:
       hibernate:
-        hbm2ddl.auto: update
         dialect: org.hibernate.dialect.PostgreSQLDialect
         jdbc:
           lob:
