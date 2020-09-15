@@ -150,18 +150,6 @@ public class ArticoliController<E extends Articoli, G extends ArticoliDto, ID ex
 			throw new BindingException(MsgErr);
 		}
 
-		// Check se l'articolo già esiste
-		E checkArt = articoliService.selectByCodArt(object.getCodArt());
-
-		if (checkArt != null) {
-			String msgErr = String.format("Articolo e' presente in anagrafica! Impossibile utilizzare il metodo POST ",
-					object.getCodArt());
-
-			logger.warn(msgErr);
-
-			throw new DuplicateException(msgErr);
-		}
-
 		HttpHeaders headers = new HttpHeaders();
 		ObjectMapper mapper = new ObjectMapper();
 
@@ -176,45 +164,6 @@ public class ArticoliController<E extends Articoli, G extends ArticoliDto, ID ex
 		return new ResponseEntity<>(responseNode, headers, HttpStatus.CREATED);
 	}
 
-	@PostMapping(value = "/aggiorna/{codArt}", produces = "application/json")
-	public ResponseEntity<?> genericUpdateEntity(@Valid @RequestBody E object, @PathVariable("codArt") String codArt,
-			BindingResult bindingResult) throws BindingException, NotFoundException {
-
-		logger.info("****** modifica articolo con codice '" + codArt + "' ******");
-
-		if (bindingResult.hasErrors()) {
-			String msgErr = errMessage.getMessage(bindingResult.getFieldError(), LocaleContextHolder.getLocale());
-
-			logger.warn(msgErr);
-
-			throw new BindingException(msgErr);
-		}
-
-		// Check se l'articolo non esiste
-		E checkArt = articoliService.selectByCodArt(object.getCodArt());
-
-		if (checkArt == null) {
-			String msgErr = String.format(
-					"Articolo %s non presente in anagrafica! Impossibile utilizzare il metodo PUT", object.getCodArt());
-
-			logger.warn(msgErr);
-
-			throw new NotFoundException(msgErr);
-		}
-
-		HttpHeaders headers = new HttpHeaders();
-		ObjectMapper mapper = new ObjectMapper();
-
-		headers.setContentType(MediaType.APPLICATION_JSON);
-		ObjectNode responseNode = mapper.createObjectNode();
-
-		articoliService.addOrUpdate(object);
-
-		responseNode.put("code", HttpStatus.OK.toString());
-		responseNode.put("message", "Modifica Articolo " + object.getCodArt() + " Eseguita Con Successo");
-
-		return new ResponseEntity<>(responseNode, headers, HttpStatus.CREATED);
-	}
 
 	@GetMapping(value = "/elimina/codice/{codArt}", produces = "application/json")
 	public ResponseEntity<?> genericDeleteByCodArt(@PathVariable("codart") String codArt) throws NotFoundException {
@@ -227,15 +176,6 @@ public class ArticoliController<E extends Articoli, G extends ArticoliDto, ID ex
 
 		ObjectNode responseNode = mapper.createObjectNode();
 
-		E articolo = articoliService.selectByCodArt(codArt);
-
-		if (articolo == null) {
-			String MsgErr = String.format("Articolo %s non presente in anagrafica!", codArt);
-
-			logger.warn(MsgErr);
-
-			throw new NotFoundException(MsgErr);
-		}
 
 		articoliService.deleteObjectById(codArt);
 
