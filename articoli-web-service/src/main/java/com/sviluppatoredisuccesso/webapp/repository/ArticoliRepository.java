@@ -17,10 +17,10 @@ public interface ArticoliRepository<E extends Articoli> extends JpaRepository<E,
 //	Articoli findByCodArt(String codArt);
 
 	
-	@Query(value = "SELECT t FROM #{#entityName} t WHERE t.descrizione LIKE :filter")
+	@Query(value = "SELECT t FROM ARTICOLI t WHERE t.descrizione LIKE :filter")
 	List<E> selectByFilter(@Param("filter") String filter);
 	
-	@Query(value = "SELECT t FROM #{#entityName} t WHERE t.codArt LIKE :codArt")
+	@Query(value = "SELECT t FROM ARTICOLI t WHERE t.codArt LIKE :codArt")
 	E selectByCodArt(@Param("codArt") String codArt);
 	
 	
