@@ -6,7 +6,9 @@
 
 	<groupId>com.sviluppatoredisuccesso</groupId>
 	<artifactId>articoli.web.service</artifactId>
-	<version>0.0.2-SNAPSHOT</version>
+
+	<version>0.0.5-SNAPSHOT</version>
+
 	<packaging>jar</packaging>
 
 	<name>articoli-web-service</name>
@@ -61,12 +63,25 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-web</artifactId>
 		</dependency>
+
+		
+		<!-- https://mvnrepository.com/artifact/com.google.guava/guava -->
+		<dependency>
+		    <groupId>com.google.guava</groupId>
+		    <artifactId>guava</artifactId>
+		    <version>29.0-jre</version>
+		</dependency>
+				
+
+
 		<!-- Postgresql -->
 		<dependency>
 			<groupId>org.postgresql</groupId>
 			<artifactId>postgresql</artifactId>
 			<scope>runtime</scope>
 		</dependency>
+
+		
 		<!-- feign -->
 		<dependency>
 			<groupId>org.springframework.cloud</groupId>
@@ -90,6 +105,14 @@
 			<artifactId>spring-boot-starter-test</artifactId>
 			<scope>test</scope>
 		</dependency>
+
+		
+		 <dependency>
+		    <groupId>org.modelmapper</groupId>
+		    <artifactId>modelmapper</artifactId>
+		    <version>2.3.5</version>
+		</dependency>
+
 	</dependencies>
 
 
