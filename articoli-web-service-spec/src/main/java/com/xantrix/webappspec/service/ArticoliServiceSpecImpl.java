@@ -9,7 +9,7 @@ import com.xantrix.webappspec.entities.ArticoliSpec;
 
 @Service
 @Transactional(readOnly = true)
-public class ArticoliServiceSpecImpl extends ArticoliServiceImpl<ArticoliSpec, String> implements ArticoliServiceSpec
+public class ArticoliServiceSpecImpl extends ArticoliServiceImpl<ArticoliSpec, Integer> implements ArticoliServiceSpec
 {
 
 	

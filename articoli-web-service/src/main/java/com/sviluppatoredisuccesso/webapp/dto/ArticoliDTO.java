@@ -1,16 +1,18 @@
 package com.sviluppatoredisuccesso.webapp.dto;
 
+import com.sviluppatoredisuccesso.webapp.entities.Articoli;
+
 public class ArticoliDto {
 
-	private String codArt;
+	private Integer codArt;
 	private String descrizione;
 	private Double prezzo;
 
-	public String getCodArt() {
+	public Integer getCodArt() {
 		return codArt;
 	}
 
-	public void setCodArt(String codArt) {
+	public void setCodArt(Integer codArt) {
 		this.codArt = codArt;
 	}
 
@@ -28,6 +30,14 @@ public class ArticoliDto {
 
 	public void setPrezzo(Double prezzo) {
 		this.prezzo = prezzo;
+	}
+	
+	
+	public Articoli convertDtoToArticoli() {
+		Articoli articoli = new Articoli();
+		articoli.setDescrizione(this.descrizione);
+		
+		return articoli;
 	}
 
 }
