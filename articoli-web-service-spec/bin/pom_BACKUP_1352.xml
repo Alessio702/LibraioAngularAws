@@ -39,12 +39,19 @@
 	</dependencyManagement>
 
 	<dependencies>
+<<<<<<< HEAD
+
 
 		<dependency>
 			<groupId>com.sviluppatoredisuccesso</groupId>
 			<artifactId>articoli.web.service</artifactId>
-			<version>0.0.5-SNAPSHOT</version>
-
+			<version>0.0.2-SNAPSHOT</version>
+=======
+		<dependency>
+			<groupId>com.sviluppatoredisuccesso</groupId>
+			<artifactId>articoli.web.service</artifactId>
+			<version>0.0.3-SNAPSHOT</version>
+>>>>>>> alessio
 		</dependency>
 
 		<dependency>
@@ -57,16 +64,20 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-web</artifactId>
 		</dependency>
-
-
+<<<<<<< HEAD
+=======
+		
+>>>>>>> alessio
 		<!-- Postgresql -->
 		<dependency>
 			<groupId>org.postgresql</groupId>
 			<artifactId>postgresql</artifactId>
 			<scope>runtime</scope>
 		</dependency>
+<<<<<<< HEAD
+=======
 
-
+>>>>>>> alessio
 		<!-- feign -->
 		<dependency>
 			<groupId>org.springframework.cloud</groupId>
