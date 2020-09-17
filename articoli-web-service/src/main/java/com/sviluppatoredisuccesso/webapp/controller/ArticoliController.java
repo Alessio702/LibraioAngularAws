@@ -61,7 +61,6 @@ public class ArticoliController<E extends Articoli, G extends ArticoliDto, ID ex
 		G dtoObject = null;
 		
 		if(codArt.matches("[0-9]+")) {
-			
 			Integer codConverted = Integer.valueOf(codArt);
 			E articolo = articoliService.selectByCodArt(codConverted);
 			
@@ -73,7 +72,6 @@ public class ArticoliController<E extends Articoli, G extends ArticoliDto, ID ex
 			} else {
 				String authHeader = httpRequest.getHeader("Authorization");
 				dtoObject = (G) articolo.convertArticoliToDTO();
-				
 				
 				dtoObject.setPrezzo(this.getPriceArt(codArt, "", authHeader));
 				return new ResponseEntity<G>(dtoObject, HttpStatus.OK);
@@ -120,7 +118,6 @@ public class ArticoliController<E extends Articoli, G extends ArticoliDto, ID ex
 
 		if (bindingResult.hasErrors()) {
 			String MsgErr = errMessage.getMessage(bindingResult.getFieldError(), LocaleContextHolder.getLocale());
-
 			logger.warn(MsgErr);
 
 			throw new BindingException(MsgErr);
@@ -149,7 +146,6 @@ public class ArticoliController<E extends Articoli, G extends ArticoliDto, ID ex
 		ObjectMapper mapper = new ObjectMapper();
 
 		headers.setContentType(MediaType.APPLICATION_JSON);
-
 		ObjectNode responseNode = mapper.createObjectNode();
 
 		articoliService.deleteObjectById(codArt);
