@@ -22,18 +22,13 @@ public abstract class ArticoliServiceImpl<E extends Articoli, ID extends Seriali
 
 
 	@Override
-	public List<E> selectByFilter(String filter) {
-		return articoliRepository.selectByFilter(filter);
+	public List<E> selectByDescription(String filter) {
+		return articoliRepository.selectByDescription(filter);
 	}
 	
 	@Override
-	public E selectByCodArt(String codArt) {
+	public E selectByCodArt(Integer codArt) {
 		return articoliRepository.selectByCodArt(codArt);
-	}
-
-	@Override
-	public E selectById(String codArt) {
-		return articoliRepository.findById(codArt).get();
 	}
 
 	@Override
@@ -47,7 +42,7 @@ public abstract class ArticoliServiceImpl<E extends Articoli, ID extends Seriali
 	}
 
 	@Override
-	public void deleteObjectById(String codArt) {
+	public void deleteObjectById(Integer codArt) {
 		articoliRepository.deleteById(codArt);
 	}
 	

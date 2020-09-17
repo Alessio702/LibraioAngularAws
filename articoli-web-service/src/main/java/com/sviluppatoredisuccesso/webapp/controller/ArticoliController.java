@@ -2,15 +2,12 @@ package com.sviluppatoredisuccesso.webapp.controller;
 
 
 import java.io.Serializable;
-import java.lang.reflect.ParameterizedType;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
-import org.modelmapper.ModelMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,7 +32,6 @@ import com.sviluppatoredisuccesso.webapp.dto.ArticoliDto;
 import com.sviluppatoredisuccesso.webapp.entities.Articoli;
 import com.sviluppatoredisuccesso.webapp.exception.BindingException;
 import com.sviluppatoredisuccesso.webapp.exception.DuplicateException;
-
 import com.sviluppatoredisuccesso.webapp.exception.NotFoundException;
 import com.sviluppatoredisuccesso.webapp.service.ArticoliService;
 
@@ -46,37 +42,8 @@ public class ArticoliController<E extends Articoli, G extends ArticoliDto, ID ex
 
 	private static final Logger logger = LoggerFactory.getLogger(ArticoliController.class);
 
-	@SuppressWarnings("unchecked")
-	public Class<G> getClassType() {
-		return (Class<G>) ((ParameterizedType) getClass().getSuperclass().getGenericSuperclass())
-				.getActualTypeArguments()[1].getClass();
-	}
-
-//	<!-- B -->
-//	private final TypeToken<G> typeToken = new TypeToken<G>(getClass()) { };
-//	private final Type type = typeToken.getType();
-//	
-//	public Type getClassType2() {
-//		return type;
-//	}
-
-//	<!-- C -->
-//	@SuppressWarnings("unchecked")
-//	private Class<G> getGenericTypeClass() {
-//        try {
-//            String className = ((ParameterizedType) getClass().getGenericSuperclass()).getActualTypeArguments()[0].getTypeName();
-//            Class<?> clazz = Class.forName(className);
-//            
-//            return (Class<G>) clazz;
-//        } catch (Exception e) {
-//            throw new IllegalStateException("Class is not parametrized with generic type!!! Please use extends <> ");
-//        }
-//    }
-
-
 	@Autowired
 	private PriceClient priceClient;
-
 
 	@Autowired
 	private ArticoliService<E, ID> articoliService;
@@ -84,67 +51,73 @@ public class ArticoliController<E extends Articoli, G extends ArticoliDto, ID ex
 	@Autowired
 	private ResourceBundleMessageSource errMessage;
 
-	@Autowired
-	private ModelMapper modelMapper;
+	
 
+	@SuppressWarnings("unchecked")
 	@GetMapping(value = "/cerca/codice/{codArt}", produces = "application/json")
-	public ResponseEntity<G> genericSearchByCodArt(@PathVariable("codArt") String codArt,
-			HttpServletRequest httpRequest) throws NotFoundException {
+	public ResponseEntity<G> genericSearchByCodArt(@PathVariable("codArt") String codArt, HttpServletRequest httpRequest) throws NotFoundException {
 
 		logger.info("****** Ricerca di filtrata per codice: " + codArt + "!");
-
-		E articolo = articoliService.selectByCodArt(codArt);
-		G dtoObject;
-
-		if (articolo == null) {
-			String errMsg = String.format("Non è stato trovato alcun articolo con codice: ", codArt);
-			logger.warn(errMsg);
-
-			throw new NotFoundException(errMsg);
+		G dtoObject = null;
+		
+		if(codArt.matches("[0-9]+")) {
+			Integer codConverted = Integer.valueOf(codArt);
+			E articolo = articoliService.selectByCodArt(codConverted);
+			
+			if (articolo == null) {
+				String errMsg = String.format("Non è stato trovato alcun articolo con codice: ", codArt);
+				logger.warn(errMsg);
+				
+				throw new NotFoundException(errMsg);
+			} else {
+				String authHeader = httpRequest.getHeader("Authorization");
+				dtoObject = (G) articolo.convertArticoliToDTO();
+				
+				dtoObject.setPrezzo(this.getPriceArt(codArt, "", authHeader));
+				return new ResponseEntity<G>(dtoObject, HttpStatus.OK);
+			}
 		} else {
-			String authHeader = httpRequest.getHeader("Authorization");
-			dtoObject = modelMapper.map(articolo, getClassType());
-
-			dtoObject.setPrezzo(this.getPriceArt(codArt, "", authHeader));
+			throw new NotFoundException("Inserito un codice alfanumerico invece che numerico");
 		}
-
-		return new ResponseEntity<G>(dtoObject, HttpStatus.OK);
 	}
 
-	@GetMapping(value = "/cerca/descrizione/{filter}", produces = "application/json")
-	public ResponseEntity<List<G>> genericSearchByFilter(@PathVariable("filter") String filter,
-			HttpServletRequest httpRequest) throws NotFoundException {
+	@SuppressWarnings("unchecked")
+	@GetMapping(value = "/cerca/descrizione/{description}", produces = "application/json")
+	public ResponseEntity<List<G>> genericSearchByDescription(@PathVariable("description") String description, HttpServletRequest httpRequest) throws NotFoundException {
 
-		logger.info("****** Ricerca di filtrata per " + filter + "!");
+		logger.info("****** Ricerca di filtrata per filtro: " + description + "!");
 
-		List<E> searchList = articoliService.selectByFilter(filter);
+		List<E> searchList = articoliService.selectByDescription(description);
 		List<G> listDto = new ArrayList<G>();
 
 		if (searchList.size() == 0) {
-			String errMsg = String.format("Non è stato trovato alcun oggetto con filtro %s", filter);
+			String errMsg = String.format("Non è stato trovato alcun oggetto con filtro %s", description);
 			logger.warn(errMsg);
 
 			throw new NotFoundException(errMsg);
 		} else {
 			String authHeader = httpRequest.getHeader("Authorization");
-			listDto = searchList.stream().map(source -> modelMapper.map(source, getClassType()))
-					.collect(Collectors.toList());
+			
+			for(int i = 0; i < searchList.size(); i++) {
+				E articolo = searchList.get(i);
+				G dtoObject = (G) articolo.convertArticoliToDTO();
+				
+				listDto.add(dtoObject); 
+			}
 
-			searchList.forEach(f -> f.setPrezzo(this.getPriceArt(f.getCodArt(), "", authHeader)));
+			searchList.forEach(f -> f.setPrezzo(this.getPriceArt(f.getCodArt().toString(), "", authHeader)));
 		}
 
 		return new ResponseEntity<List<G>>(listDto, HttpStatus.OK);
 	}
 
 	@PostMapping(value = "/inserisci", produces = "application/json")
-	public ResponseEntity<?> genericAddObject(@Valid @RequestBody E object, HttpServletRequest httpRequest,
-			BindingResult bindingResult) throws BindingException, DuplicateException {
+	public ResponseEntity<?> genericAddObject(@Valid @RequestBody E object, HttpServletRequest httpRequest, BindingResult bindingResult) throws BindingException, DuplicateException {
 
 		logger.info("****** inserimento record ******");
 
 		if (bindingResult.hasErrors()) {
 			String MsgErr = errMessage.getMessage(bindingResult.getFieldError(), LocaleContextHolder.getLocale());
-
 			logger.warn(MsgErr);
 
 			throw new BindingException(MsgErr);
@@ -166,16 +139,14 @@ public class ArticoliController<E extends Articoli, G extends ArticoliDto, ID ex
 
 
 	@GetMapping(value = "/elimina/codice/{codArt}", produces = "application/json")
-	public ResponseEntity<?> genericDeleteByCodArt(@PathVariable("codart") String codArt) throws NotFoundException {
+	public ResponseEntity<?> genericDeleteByCodArt(@PathVariable("codart") Integer codArt) throws NotFoundException {
 		logger.info("Eliminiamo l'articolo con codice " + codArt);
 
 		HttpHeaders headers = new HttpHeaders();
 		ObjectMapper mapper = new ObjectMapper();
 
 		headers.setContentType(MediaType.APPLICATION_JSON);
-
 		ObjectNode responseNode = mapper.createObjectNode();
-
 
 		articoliService.deleteObjectById(codArt);
 
@@ -198,6 +169,9 @@ public class ArticoliController<E extends Articoli, G extends ArticoliDto, ID ex
 		}
 	}
 
+	
+	
+	
 
 //	@Autowired
 //	private BarcodeService barcodeService;
@@ -376,7 +350,7 @@ public class ArticoliController<E extends Articoli, G extends ArticoliDto, ID ex
 //
 //	------------------- ELIMINAZIONE ARTICOLO ------------------------------------
 //	@RequestMapping(value = "/elimina/{codart}", method = RequestMethod.DELETE, produces = "application/json" )
-//	public ResponseEntity<?> deleteArt(@PathVariable("codart") String CodArt)
+//	public ResponseEntity<?> deleteArt(@PathVariable("codart") Integer CodArt)
 //
 //	{
 //		logger.info("Eliminiamo l'articolo con codice " + CodArt);
@@ -423,7 +397,7 @@ public class ArticoliController<E extends Articoli, G extends ArticoliDto, ID ex
 //	
 //	// ------------------- ELIMINAZIONE ARTICOLO ------------------------------------
 //	@RequestMapping(value = "/elimina/{codart}", method = RequestMethod.DELETE, produces = "application/json" )
-//	public ResponseEntity<?> deleteArt(@PathVariable("codart") String CodArt)
+//	public ResponseEntity<?> deleteArt(@PathVariable("codart") Integer CodArt)
 //		 
 //	{
 //		logger.info("Eliminiamo l'articolo con codice " + CodArt);

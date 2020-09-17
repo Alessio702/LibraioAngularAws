@@ -11,16 +11,14 @@ import com.sviluppatoredisuccesso.webapp.entities.Articoli;
 public interface ArticoliService<E extends Articoli, ID extends Serializable>
 {
 	
-	public abstract List<E> selectByFilter(String filter);
+	public abstract List<E> selectByDescription(String filter);
 	
-	public abstract E selectByCodArt(String codArt);
-	
-	public abstract E selectById(String codArt);
+	public abstract E selectByCodArt(Integer codArt);
 	
 	public abstract void addOrUpdate(E object);
 	
 	public abstract void deleteObject(E object);
 	
-	public abstract void deleteObjectById(String codArt);
+	public abstract void deleteObjectById(Integer codArt);
 	
 }

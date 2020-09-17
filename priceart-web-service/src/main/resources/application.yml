@@ -10,15 +10,15 @@ spring:
     active: list1
   application:
     name: PriceArtService
-       
+
 # ==============================================================
 # = Proprietà Fonte Dati PostgreSQL
 # ==============================================================
   datasource:
     initialization-mode: always
-    password: Alex1993!
+    password: postgres
     platform: postgres
-    url: jdbc:postgresql://localhost:5433/Alphashop
+    url: jdbc:postgresql://localhost:5433/postgres
     username: postgres
   jpa:
     hibernate:
