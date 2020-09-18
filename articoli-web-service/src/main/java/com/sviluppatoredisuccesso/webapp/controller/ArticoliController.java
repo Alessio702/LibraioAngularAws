@@ -19,9 +19,11 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -84,10 +86,16 @@ public class ArticoliController<E extends Articoli, G extends ArticoliDto, ID ex
 	@SuppressWarnings("unchecked")
 	@GetMapping(value = "/cerca/descrizione/{description}", produces = "application/json")
 	public ResponseEntity<List<G>> genericSearchByDescription(@PathVariable("description") String description, HttpServletRequest httpRequest) throws NotFoundException {
-
+		
 		logger.info("****** Ricerca di filtrata per filtro: " + description + "!");
-
-		List<E> searchList = articoliService.selectByDescription(description);
+		List <E> searchList;
+		if(description.equalsIgnoreCase("undefined")) {
+			System.out.println("findall");
+			searchList = articoliService.findAll();
+		} else {
+			searchList = articoliService.selectByDescription(description);
+		}
+		
 		List<G> listDto = new ArrayList<G>();
 
 		if (searchList.size() == 0) {
@@ -136,10 +144,37 @@ public class ArticoliController<E extends Articoli, G extends ArticoliDto, ID ex
 
 		return new ResponseEntity<>(responseNode, headers, HttpStatus.CREATED);
 	}
+	
+	@PutMapping(value = "/inserisci", produces = "application/json")
+	public ResponseEntity<?> genericUpdateObject(@Valid @RequestBody E object, HttpServletRequest httpRequest, BindingResult bindingResult) throws BindingException, DuplicateException {
+
+		logger.info("****** aggiornamento record ******");
+
+		if (bindingResult.hasErrors()) {
+			String MsgErr = errMessage.getMessage(bindingResult.getFieldError(), LocaleContextHolder.getLocale());
+			logger.warn(MsgErr);
+
+			throw new BindingException(MsgErr);
+		}
+
+		HttpHeaders headers = new HttpHeaders();
+		ObjectMapper mapper = new ObjectMapper();
+
+		headers.setContentType(MediaType.APPLICATION_JSON);
+		ObjectNode responseNode = mapper.createObjectNode();
+		
+		articoliService.addOrUpdate(object);
+
+		responseNode.put("code", HttpStatus.OK.toString());
+		responseNode.put("message", "Aggiornamento Articolo eseguito Con Successo");
+
+		return new ResponseEntity<>(responseNode, headers, HttpStatus.CREATED);
+	}
 
 
-	@GetMapping(value = "/elimina/codice/{codArt}", produces = "application/json")
-	public ResponseEntity<?> genericDeleteByCodArt(@PathVariable("codart") Integer codArt) throws NotFoundException {
+	@DeleteMapping(value = "/elimina/codice/{codArt}", produces = "application/json")
+	public ResponseEntity<?> genericDeleteByCodArt(@PathVariable("codArt") Integer codArt) throws NotFoundException {
+		
 		logger.info("Eliminiamo l'articolo con codice " + codArt);
 
 		HttpHeaders headers = new HttpHeaders();
@@ -147,12 +182,18 @@ public class ArticoliController<E extends Articoli, G extends ArticoliDto, ID ex
 
 		headers.setContentType(MediaType.APPLICATION_JSON);
 		ObjectNode responseNode = mapper.createObjectNode();
-
-		articoliService.deleteObjectById(codArt);
-
+		
+		E object = articoliService.selectByCodArt(codArt);
+		
+		if (object != null) {
+			articoliService.deleteObjectById(codArt);
+			responseNode.put("message", "Eliminazione Articolo " + codArt + " Eseguita Con Successo");
+		} else {
+			responseNode.put("message", "Eliminazione Articolo " + codArt + " non eseguita!");
+		}
+		
 		responseNode.put("code", HttpStatus.OK.toString());
-		responseNode.put("message", "Eliminazione Articolo " + codArt + " Eseguita Con Successo");
-
+		
 		return new ResponseEntity<>(responseNode, headers, HttpStatus.OK);
 	}
 
@@ -349,8 +390,8 @@ public class ArticoliController<E extends Articoli, G extends ArticoliDto, ID ex
 //	}
 //
 //	------------------- ELIMINAZIONE ARTICOLO ------------------------------------
-//	@RequestMapping(value = "/elimina/{codart}", method = RequestMethod.DELETE, produces = "application/json" )
-//	public ResponseEntity<?> deleteArt(@PathVariable("codart") Integer CodArt)
+//	@RequestMapping(value = "/elimina/{codArt}", method = RequestMethod.DELETE, produces = "application/json" )
+//	public ResponseEntity<?> deleteArt(@PathVariable("codArt") Integer CodArt)
 //
 //	{
 //		logger.info("Eliminiamo l'articolo con codice " + CodArt);
@@ -396,8 +437,8 @@ public class ArticoliController<E extends Articoli, G extends ArticoliDto, ID ex
 //	}
 //	
 //	// ------------------- ELIMINAZIONE ARTICOLO ------------------------------------
-//	@RequestMapping(value = "/elimina/{codart}", method = RequestMethod.DELETE, produces = "application/json" )
-//	public ResponseEntity<?> deleteArt(@PathVariable("codart") Integer CodArt)
+//	@RequestMapping(value = "/elimina/{codArt}", method = RequestMethod.DELETE, produces = "application/json" )
+//	public ResponseEntity<?> deleteArt(@PathVariable("codArt") Integer CodArt)
 //		 
 //	{
 //		logger.info("Eliminiamo l'articolo con codice " + CodArt);

@@ -6,13 +6,11 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import com.sviluppatoredisuccesso.webapp.entities.Articoli;
 import com.sviluppatoredisuccesso.webapp.repository.ArticoliRepository;
 
 @Service
-@Transactional(readOnly = true)
 public abstract class ArticoliServiceImpl<E extends Articoli, ID extends Serializable> implements ArticoliService<E, ID>
 {
 
@@ -34,6 +32,11 @@ public abstract class ArticoliServiceImpl<E extends Articoli, ID extends Seriali
 	@Override
 	public void addOrUpdate(E object) {
 		articoliRepository.save(object);
+	}
+	
+	@Override
+	public List<E> findAll() {
+		return articoliRepository.findAll();
 	}
 	
 	@Override
