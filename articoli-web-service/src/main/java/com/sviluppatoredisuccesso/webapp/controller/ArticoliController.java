@@ -111,6 +111,7 @@ public class ArticoliController<E extends Articoli, G extends ArticoliDto, ID ex
 		return new ResponseEntity<List<G>>(listDto, HttpStatus.OK);
 	}
 
+	@Transactional
 	@PostMapping(value = "/inserisci", produces = "application/json")
 	public ResponseEntity<?> genericAddObject(@Valid @RequestBody E object, HttpServletRequest httpRequest, BindingResult bindingResult) throws BindingException, DuplicateException {
 
@@ -138,21 +139,28 @@ public class ArticoliController<E extends Articoli, G extends ArticoliDto, ID ex
 	}
 
 
-	@GetMapping(value = "/elimina/codice/{codArt}", produces = "application/json")
-	public ResponseEntity<?> genericDeleteByCodArt(@PathVariable("codart") Integer codArt) throws NotFoundException {
-		logger.info("Eliminiamo l'articolo con codice " + codArt);
+	@GetMapping(value = "/elimina/codice/{codart}", produces = "application/json")
+	public ResponseEntity<?> genericDeleteByCodArt(@PathVariable("codart") Integer codart) throws NotFoundException {
+		
+		logger.info("Eliminiamo l'articolo con codice " + codart);
 
 		HttpHeaders headers = new HttpHeaders();
 		ObjectMapper mapper = new ObjectMapper();
 
 		headers.setContentType(MediaType.APPLICATION_JSON);
 		ObjectNode responseNode = mapper.createObjectNode();
-
-		articoliService.deleteObjectById(codArt);
-
+		
+		E object = articoliService.selectByCodArt(codart);
+		
+		if (object != null) {
+			articoliService.deleteObjectById(codart);
+			responseNode.put("message", "Eliminazione Articolo " + codart + " Eseguita Con Successo");
+		} else {
+			responseNode.put("message", "Eliminazione Articolo " + codart + " non eseguita!");
+		}
+		
 		responseNode.put("code", HttpStatus.OK.toString());
-		responseNode.put("message", "Eliminazione Articolo " + codArt + " Eseguita Con Successo");
-
+		
 		return new ResponseEntity<>(responseNode, headers, HttpStatus.OK);
 	}
 
