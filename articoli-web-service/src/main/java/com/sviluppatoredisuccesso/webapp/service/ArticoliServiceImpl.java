@@ -35,6 +35,11 @@ public abstract class ArticoliServiceImpl<E extends Articoli, ID extends Seriali
 	}
 	
 	@Override
+	public List<E> findAll() {
+		return articoliRepository.findAll();
+	}
+	
+	@Override
 	public void deleteObject(E object) {
 		articoliRepository.delete(object);
 	}

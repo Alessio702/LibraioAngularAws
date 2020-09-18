@@ -20,5 +20,7 @@ public interface ArticoliService<E extends Articoli, ID extends Serializable>
 	public abstract void deleteObject(E object);
 	
 	public abstract void deleteObjectById(Integer codArt);
+
+	public abstract List<E> findAll();
 	
 }
