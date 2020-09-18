@@ -3,7 +3,6 @@
 # ==============================================================
 
 server:
-
   port: 5001
   
 spring:
@@ -16,9 +15,9 @@ spring:
 # ==============================================================
   datasource:
     initialization-mode: always
-    password: 07139
+    password: postgres
     platform: postgres
-    url: jdbc:postgresql://localhost:5000/postgres
+    url: jdbc:postgresql://localhost5433/postgres
     username: postgres
   jpa:
     hibernate:
