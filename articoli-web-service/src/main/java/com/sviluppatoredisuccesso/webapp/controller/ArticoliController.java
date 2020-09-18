@@ -53,39 +53,39 @@ public class ArticoliController<E extends Articoli, G extends ArticoliDto, ID ex
 
 	
 
-	@SuppressWarnings("unchecked")
-	@GetMapping(value = "/cerca/codice/{codArt}", produces = "application/json")
-	public ResponseEntity<G> genericSearchByCodArt(@PathVariable("codArt") String codArt, HttpServletRequest httpRequest) throws NotFoundException {
-
-		logger.info("****** Ricerca di filtrata per codice: " + codArt + "!");
-		G dtoObject = null;
-		
-		if(codArt.matches("[0-9]+")) {
-			Integer codConverted = Integer.valueOf(codArt);
-			E articolo = articoliService.selectByCodArt(codConverted);
-			
-			if (articolo == null) {
-				String errMsg = String.format("Non è stato trovato alcun articolo con codice: ", codArt);
-				logger.warn(errMsg);
-				
-				throw new NotFoundException(errMsg);
-			} else {
-				String authHeader = httpRequest.getHeader("Authorization");
-				dtoObject = (G) articolo.convertArticoliToDTO();
-				
-				dtoObject.setPrezzo(this.getPriceArt(codArt, "", authHeader));
-				return new ResponseEntity<G>(dtoObject, HttpStatus.OK);
-			}
-		} else {
-			throw new NotFoundException("Inserito un codice alfanumerico invece che numerico");
-		}
-	}
+//	@SuppressWarnings("unchecked")
+//	@GetMapping(value = "/cerca/codice/{codArt}", produces = "application/json")
+//	public ResponseEntity<G> genericSearchByCodArt(@PathVariable("codArt") String codArt, HttpServletRequest httpRequest) throws NotFoundException {
+//
+//		logger.info("****** Ricerca filtrata per codice: " + codArt + "!");
+//		G dtoObject = null;
+//		
+//		if(codArt.matches("[0-9]+")) {
+//			Integer codConverted = Integer.valueOf(codArt);
+//			E articolo = articoliService.selectByCodArt(codConverted);
+//			
+//			if (articolo == null) {
+//				String errMsg = String.format("Non è stato trovato alcun articolo con codice: ", codArt);
+//				logger.warn(errMsg);
+//				
+//				throw new NotFoundException(errMsg);
+//			} else {
+//				String authHeader = httpRequest.getHeader("Authorization");
+//				dtoObject = (G) articolo.convertArticoliToDTO();
+//				
+//				dtoObject.setPrezzo(this.getPriceArt(codArt, "", authHeader));
+//				return new ResponseEntity<G>(dtoObject, HttpStatus.OK);
+//			}
+//		} else {
+//			throw new NotFoundException("Inserito un codice alfanumerico invece che numerico");
+//		}
+//	}
 
 	@SuppressWarnings("unchecked")
 	@GetMapping(value = "/cerca/descrizione/{description}", produces = "application/json")
 	public ResponseEntity<List<G>> genericSearchByDescription(@PathVariable("description") String description, HttpServletRequest httpRequest) throws NotFoundException {
 
-		logger.info("****** Ricerca di filtrata per filtro: " + description + "!");
+		logger.info("****** Ricerca filtrata per filtro: " + description + "!");
 
 		List<E> searchList = articoliService.selectByDescription(description);
 		List<G> listDto = new ArrayList<G>();
