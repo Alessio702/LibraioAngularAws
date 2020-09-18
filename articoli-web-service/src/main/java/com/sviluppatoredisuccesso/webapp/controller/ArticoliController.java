@@ -111,7 +111,6 @@ public class ArticoliController<E extends Articoli, G extends ArticoliDto, ID ex
 		return new ResponseEntity<List<G>>(listDto, HttpStatus.OK);
 	}
 
-	@Transactional
 	@PostMapping(value = "/inserisci", produces = "application/json")
 	public ResponseEntity<?> genericAddObject(@Valid @RequestBody E object, HttpServletRequest httpRequest, BindingResult bindingResult) throws BindingException, DuplicateException {
 
