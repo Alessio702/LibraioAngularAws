@@ -12,22 +12,13 @@ spring:
     name: PriceArtService
 
 # ==============================================================
-# = Proprietà Fonte Dati PostgreSQL
+# = Proprietà Fonte Dati MongoDB
 # ==============================================================
-  datasource:
-    initialization-mode: always
-    password: postgres
-    platform: postgres
-    url: jdbc:postgresql://localhost:5433/postgres
-    username: postgres
-  jpa:
-    hibernate:
-      ddl-auto: update
-    properties:
-      hibernate:
-        dialect: org.hibernate.dialect.PostgreSQLDialect
-        jdbc:
-          lob:
-            non_contextual_creation: true
-    show-sql: true
-    generate-ddl:  true
+  data:
+    mongodb:
+      authentication-database: admin
+      database: ms-users
+      host: localhost
+      password: Alex1993!
+      port: 37017
+      username: alex
