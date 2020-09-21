@@ -4,16 +4,16 @@ import com.sviluppatoredisuccesso.webapp.entities.Articoli;
 
 public class ArticoliDto {
 
-	private Integer codArt;
+	private Integer id;
 	private String descrizione;
 	private Double prezzo;
 
-	public Integer getCodArt() {
-		return codArt;
+	public Integer getId() {
+		return id;
 	}
 
-	public void setCodArt(Integer codArt) {
-		this.codArt = codArt;
+	public void setId(Integer id) {
+		this.id = id;
 	}
 
 	public String getDescrizione() {

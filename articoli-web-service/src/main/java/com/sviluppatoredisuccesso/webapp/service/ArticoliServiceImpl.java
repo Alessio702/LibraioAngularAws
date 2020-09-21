@@ -25,8 +25,8 @@ public abstract class ArticoliServiceImpl<E extends Articoli, ID extends Seriali
 	}
 	
 	@Override
-	public E selectByCodArt(Integer codArt) {
-		return articoliRepository.selectByCodArt(codArt);
+	public E selectById(Integer id) {
+		return articoliRepository.selectById(id);
 	}
 
 	@Override
@@ -45,8 +45,8 @@ public abstract class ArticoliServiceImpl<E extends Articoli, ID extends Seriali
 	}
 
 	@Override
-	public void deleteObjectById(Integer codArt) {
-		articoliRepository.deleteById(codArt);
+	public void deleteObjectById(Integer id) {
+		articoliRepository.deleteById(id);
 	}
 	
 	

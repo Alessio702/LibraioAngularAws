@@ -24,31 +24,31 @@ public class PrezziServiceImpl implements PrezziService
 	
 	//Metodi già presenti usati con l'annotation @Query
 	@Override
-	public DettListini SelPrezzo(String CodArt, String Listino)
+	public DettListini SelPrezzo(String Id, String Listino)
 	{
-		return prezziRepository.SelByCodArtAndList(CodArt, Listino);
+		return prezziRepository.SelByIdAndList(Id, Listino);
 	}
 	
 	
 	//Metodi senza l'annotation @Query
 	@Override
-	public DettListini selectPrezzo(String CodArt, String Listino)
+	public DettListini selectPrezzo(String Id, String Listino)
 	{
-		return prezziRepository.SelByCodArtAndList(CodArt, Listino);
+		return prezziRepository.SelByIdAndList(Id, Listino);
 	}
 
 	
 	
 	@Override
-	public void DelPrezzo(String CodArt, String IdList) 
+	public void DelPrezzo(String Id, String IdList) 
 	{
-		prezziRepository.DelRowDettList(CodArt, IdList);
+		prezziRepository.DelRowDettList(Id, IdList);
 	}
 	
 	@Override
-	public void findAndDeletePrezzo(String CodArt, String IdList) 
+	public void findAndDeletePrezzo(String Id, String IdList) 
 	{
-		prezziRepository.DelRowDettList(CodArt, IdList);
+		prezziRepository.DelRowDettList(Id, IdList);
 	}
 
 
@@ -57,17 +57,17 @@ public class PrezziServiceImpl implements PrezziService
 	
 	//Metodi con i criteria per MongoDB
 //	@Override
-//	public DettListini findPrezzo(String CodArt, String Listino){
+//	public DettListini findPrezzo(String Id, String Listino){
 //		Query query = Query.query(new Criteria().andOperator(
-//				Criteria.where("dettListini.codArt").is(CodArt),
+//				Criteria.where("dettListini.id").is(Id),
 //				Criteria.where("listini.id").is(Listino)));
 //		return (DettListini) mongoTemplate.find(query, DettListini.class);	
 //	}
 //	
 //	@Override
-//	public void removePrezzo(String CodArt, String IdList) 	{
+//	public void removePrezzo(String Id, String IdList) 	{
 //		Query query = Query.query(new Criteria().andOperator(
-//				Criteria.where("dettListini.codArt").is(CodArt),
+//				Criteria.where("dettListini.id").is(Id),
 //				Criteria.where("dettListini.id").is(IdList)));
 //		mongoTemplate.findAndRemove(query, DettListini.class);
 //	}

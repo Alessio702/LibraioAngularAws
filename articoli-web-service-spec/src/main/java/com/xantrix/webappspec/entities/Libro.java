@@ -9,7 +9,7 @@ import com.sviluppatoredisuccesso.webapp.entities.Articoli;
 
 @Entity
 @DiscriminatorValue("libro")
-public class ArticoliSpec extends Articoli {
+public class Libro extends Articoli {
 
 
 	/**

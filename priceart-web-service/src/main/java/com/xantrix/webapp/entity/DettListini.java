@@ -22,10 +22,6 @@ public class DettListini implements Serializable {
 	@Id
 	private Integer id;
 
-	@Size(min = 5, max = 20, message = "{Size.DettListini.codArt.Validation}")
-	@NotNull(message = "{NotNull.DettListini.codArt.Validation}")
-	private String codArt;
-
 	@Min(value = (long) 0.01, message = "{Min.DettListini.prezzo.Validation}")
 	private Double prezzo;
 
@@ -37,8 +33,8 @@ public class DettListini implements Serializable {
 	}
 
 	@PersistenceConstructor
-	public DettListini(String CodArt, Double Prezzo, Listini Listino) {
-		this.codArt = CodArt;
+	public DettListini(Integer Id, Double Prezzo, Listini Listino) {
+		this.id = Id;
 		this.prezzo = Prezzo;
 		this.listino = Listino;
 	}
@@ -51,13 +47,6 @@ public class DettListini implements Serializable {
 		this.id = id;
 	}
 
-	public String getCodArt() {
-		return codArt;
-	}
-
-	public void setCodArt(String codArt) {
-		this.codArt = codArt;
-	}
 
 	public Double getPrezzo() {
 		return prezzo;

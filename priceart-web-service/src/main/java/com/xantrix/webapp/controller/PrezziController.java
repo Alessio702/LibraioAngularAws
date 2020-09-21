@@ -34,9 +34,9 @@ public class PrezziController {
 	@Autowired
 	private AppConfig Config;
 
-	// ------------------- SELECT PREZZO CODART ------------------------------------
-	@GetMapping(value = {"/{codart}/{idlist}", "/{codart}"})
-	public double getPriceCodArt(@PathVariable("codart") String CodArt, @PathVariable("idlist") Optional<String> optIdList)  
+	// ------------------- SELECT PREZZO ID ------------------------------------
+	@GetMapping(value = {"/{id}/{idlist}", "/{id}"})
+	public double getPriceId(@PathVariable("id") String Id, @PathVariable("idlist") Optional<String> optIdList)  
 	{
 		double retVal = 0;
 
@@ -44,7 +44,7 @@ public class PrezziController {
 		
 		logger.info("Listino di Riferimento: " + IdList);
 		
-		DettListini prezzo =  prezziService.SelPrezzo(CodArt, IdList);
+		DettListini prezzo =  prezziService.SelPrezzo(Id, IdList);
 		
 		if (prezzo != null)
 		{
@@ -61,9 +61,9 @@ public class PrezziController {
 
 	// ------------------- DELETE PREZZO LISTINO
 	// ------------------------------------
-	@RequestMapping(value = "/elimina/{codart}/{idlist}", method = RequestMethod.DELETE)
-	public ResponseEntity<?> deletePrice(@PathVariable("codart") String CodArt, @PathVariable("idlist") String IdList) {
-		logger.info(String.format("Eliminazione prezzo listino %s dell'articolo %s", IdList, CodArt));
+	@RequestMapping(value = "/elimina/{id}/{idlist}", method = RequestMethod.DELETE)
+	public ResponseEntity<?> deletePrice(@PathVariable("id") String Id, @PathVariable("idlist") String IdList) {
+		logger.info(String.format("Eliminazione prezzo listino %s dell'articolo %s", IdList, Id));
 
 		HttpHeaders headers = new HttpHeaders();
 		ObjectMapper mapper = new ObjectMapper();
@@ -72,7 +72,7 @@ public class PrezziController {
 
 		ObjectNode responseNode = mapper.createObjectNode();
 
-		prezziService.DelPrezzo(CodArt, IdList);
+		prezziService.DelPrezzo(Id, IdList);
 
 		responseNode.put("code", HttpStatus.OK.toString());
 		responseNode.put("message", "Eliminazione Prezzo Eseguita Con Successo");

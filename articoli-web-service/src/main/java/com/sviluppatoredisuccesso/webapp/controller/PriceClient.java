@@ -10,10 +10,10 @@ import org.springframework.web.bind.annotation.RequestHeader;
 
 public interface PriceClient 
 {
-	@GetMapping(value = "/api/prezzi/{codart}")
-    public Double getDefPriceArt(@RequestHeader("Authorization") String AuthHeader, @PathVariable("codart") String CodArt);
+	@GetMapping(value = "/api/prezzi/{id}")
+    public Double getDefPriceArt(@RequestHeader("Authorization") String AuthHeader, @PathVariable("id") String Id);
 	
-	@GetMapping(value = "/api/prezzi/{codart}/{idlist}")
-    public Double getPriceArt(@RequestHeader("Authorization") String AuthHeader, @PathVariable("codart") String CodArt, 
+	@GetMapping(value = "/api/prezzi/{id}/{idlist}")
+    public Double getPriceArt(@RequestHeader("Authorization") String AuthHeader, @PathVariable("id") String Id, 
     		@PathVariable("idlist") String IdList);
 }

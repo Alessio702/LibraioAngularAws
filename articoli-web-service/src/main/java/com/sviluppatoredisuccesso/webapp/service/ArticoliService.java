@@ -13,13 +13,13 @@ public interface ArticoliService<E extends Articoli, ID extends Serializable>
 	
 	public abstract List<E> selectByDescription(String filter);
 	
-	public abstract E selectByCodArt(Integer codArt);
+	public abstract E selectById(Integer id);
 	
 	public abstract void addOrUpdate(E object);
 	
 	public abstract void deleteObject(E object);
 	
-	public abstract void deleteObjectById(Integer codArt);
+	public abstract void deleteObjectById(Integer id);
 
 	public abstract List<E> findAll();
 	

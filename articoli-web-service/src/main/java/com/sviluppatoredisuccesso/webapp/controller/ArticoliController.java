@@ -56,18 +56,18 @@ public class ArticoliController<E extends Articoli, G extends ArticoliDto, ID ex
 	
 
 	@SuppressWarnings("unchecked")
-	@GetMapping(value = "/cerca/codice/{codArt}", produces = "application/json")
-	public ResponseEntity<G> genericSearchByCodArt(@PathVariable("codArt") String codArt, HttpServletRequest httpRequest) throws NotFoundException {
+	@GetMapping(value = "/cerca/codice/{id}", produces = "application/json")
+	public ResponseEntity<G> genericSearchById(@PathVariable("id") String id, HttpServletRequest httpRequest) throws NotFoundException {
 
-		logger.info("****** Ricerca filtrata per codice: " + codArt + "!");
+		logger.info("****** Ricerca filtrata per codice: " + id + "!");
 		G dtoObject = null;
 		
-		if(codArt.matches("[0-9]+")) {
-			Integer codConverted = Integer.valueOf(codArt);
-			E articolo = articoliService.selectByCodArt(codConverted);
+		if(id.matches("[0-9]+")) {
+			Integer codConverted = Integer.valueOf(id);
+			E articolo = articoliService.selectById(codConverted);
 			
 			if (articolo == null) {
-				String errMsg = String.format("Non è stato trovato alcun articolo con codice: ", codArt);
+				String errMsg = String.format("Non è stato trovato alcun articolo con codice: ", id);
 				logger.warn(errMsg);
 				
 				throw new NotFoundException(errMsg);
@@ -75,7 +75,7 @@ public class ArticoliController<E extends Articoli, G extends ArticoliDto, ID ex
 				String authHeader = httpRequest.getHeader("Authorization");
 				dtoObject = (G) articolo.convertArticoliToDTO();
 				
-				dtoObject.setPrezzo(this.getPriceArt(codArt, "", authHeader));
+				dtoObject.setPrezzo(this.getPriceArt(id, "", authHeader));
 				return new ResponseEntity<G>(dtoObject, HttpStatus.OK);
 			}
 		} else {
@@ -115,7 +115,7 @@ public class ArticoliController<E extends Articoli, G extends ArticoliDto, ID ex
 				listDto.add(dtoObject); 
 			}
 
-			searchList.forEach(f -> f.setPrezzo(this.getPriceArt(f.getCodArt().toString(), "", authHeader)));
+			searchList.forEach(f -> f.setPrezzo(this.getPriceArt(f.getId().toString(), "", authHeader)));
 		}
 
 		return new ResponseEntity<List<G>>(listDto, HttpStatus.OK);
@@ -174,10 +174,10 @@ public class ArticoliController<E extends Articoli, G extends ArticoliDto, ID ex
 	}
 
 
-	@DeleteMapping(value = "/elimina/codice/{codArt}", produces = "application/json")
-	public ResponseEntity<?> genericDeleteByCodArt(@PathVariable("codArt") Integer codArt) throws NotFoundException {
+	@DeleteMapping(value = "/elimina/codice/{id}", produces = "application/json")
+	public ResponseEntity<?> genericDeleteById(@PathVariable("id") Integer id) throws NotFoundException {
 		
-		logger.info("Eliminiamo l'articolo con codice " + codArt);
+		logger.info("Eliminiamo l'articolo con codice " + id);
 
 		HttpHeaders headers = new HttpHeaders();
 		ObjectMapper mapper = new ObjectMapper();
@@ -185,13 +185,13 @@ public class ArticoliController<E extends Articoli, G extends ArticoliDto, ID ex
 		headers.setContentType(MediaType.APPLICATION_JSON);
 		ObjectNode responseNode = mapper.createObjectNode();
 		
-		E object = articoliService.selectByCodArt(codArt);
+		E object = articoliService.selectById(id);
 		
 		if (object != null) {
-			articoliService.deleteObjectById(codArt);
-			responseNode.put("message", "Eliminazione Articolo " + codArt + " Eseguita Con Successo");
+			articoliService.deleteObjectById(id);
+			responseNode.put("message", "Eliminazione Articolo " + id + " Eseguita Con Successo");
 		} else {
-			responseNode.put("message", "Eliminazione Articolo " + codArt + " non eseguita!");
+			responseNode.put("message", "Eliminazione Articolo " + id + " non eseguita!");
 		}
 		
 		responseNode.put("code", HttpStatus.OK.toString());
@@ -199,11 +199,11 @@ public class ArticoliController<E extends Articoli, G extends ArticoliDto, ID ex
 		return new ResponseEntity<>(responseNode, headers, HttpStatus.OK);
 	}
 
-	private Double getPriceArt(String CodArt, String IdList, String Header) {
+	private Double getPriceArt(String Id, String IdList, String Header) {
 		try {
-			Double Prezzo = (IdList.length() > 0) ? priceClient.getPriceArt(Header, CodArt, IdList)
-					: priceClient.getDefPriceArt(Header, CodArt);
-			logger.info("Prezzo Articolo " + CodArt + ": " + Prezzo);
+			Double Prezzo = (IdList.length() > 0) ? priceClient.getPriceArt(Header, Id, IdList)
+					: priceClient.getDefPriceArt(Header, Id);
+			logger.info("Prezzo Articolo " + Id + ": " + Prezzo);
 
 			return Prezzo;
 		} catch (Exception ex) {
