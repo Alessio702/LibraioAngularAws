@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestHeader;
 
 
-@FeignClient(name ="PriceArtService", url="http://localhost:5003") //, configuration = FeignClientConfiguration.class)
+@FeignClient(name ="PriceArtService", url="http://restapitest-env-1.eba-z2vwijdq.eu-south-1.elasticbeanstalk.com/") //, configuration = FeignClientConfiguration.class)
 
 public interface PriceClient 
 {

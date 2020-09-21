@@ -3,7 +3,7 @@
 # ==============================================================
 
 server:
-  port: 5001
+  port: 5000
   
 spring:
   application:
@@ -15,10 +15,10 @@ spring:
 # ==============================================================
   datasource:
     initialization-mode: always
-    password: postgres
+    password: ${RDS_PASSWORD:Alex1993!}
     platform: postgres
-    url: jdbc:postgresql://localhost5433/postgres
-    username: postgres
+    url: jdbc:postgresql://${RDS_HOSTNAME:192.168.51.5}:${RDS_PORT:5433}/${RDS_DB_NAME:Alphashop}
+    username: ${RDS_USERNAME:postgres}
   jpa:
     hibernate:
       ddl-auto: update
