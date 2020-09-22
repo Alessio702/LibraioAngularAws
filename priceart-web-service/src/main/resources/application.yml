@@ -14,11 +14,35 @@ spring:
 # ==============================================================
 # = Proprietà Fonte Dati MongoDB
 # ==============================================================
-  data:
-    mongodb:
-      authentication-database: admin
-      database: ms-users
-      host: localhost
-      password: Alex1993!
-      port: 37017
-      username: alex
+#  data:
+#    mongodb:
+#      authentication-database: admin
+#     database: ms-users
+#      host: localhost
+#      password: Alex1993!
+#      port: 37017
+#      username: alex
+
+
+# ==============================================================
+# = Proprietà Fonte Dati PostgreSQL
+# ==============================================================
+  datasource:
+    initialization-mode: always
+    password: ${RDS_PASSWORD:postgres}
+    platform: postgres
+    url: jdbc:postgresql://${RDS_HOSTNAME:localhost}:${RDS_PORT:5433}/${RDS_DB_NAME:postgres}
+    username: ${RDS_USERNAME:postgres}
+  jpa:
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+        jdbc:
+          lob:
+            non_contextual_creation: true
+    show-sql: true
+    generate-ddl:  true
+  main:
+    allow-bean-definition-overriding: true
