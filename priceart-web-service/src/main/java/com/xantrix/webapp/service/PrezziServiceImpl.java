@@ -4,9 +4,6 @@ package com.xantrix.webapp.service;
 //import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.mongodb.core.MongoTemplate;
-import org.springframework.data.mongodb.core.query.Criteria;
-import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Service;
 
 import com.xantrix.webapp.entity.DettListini;
@@ -19,8 +16,8 @@ public class PrezziServiceImpl implements PrezziService
 	@Autowired
 	PrezziRepository prezziRepository;
 
-	@Autowired
-    private MongoTemplate mongoTemplate;
+//	@Autowired
+//    private MongoTemplate mongoTemplate;
 	
 	//Metodi già presenti usati con l'annotation @Query
 	@Override

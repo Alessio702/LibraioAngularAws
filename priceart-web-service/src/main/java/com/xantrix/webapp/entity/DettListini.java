@@ -2,18 +2,15 @@ package com.xantrix.webapp.entity;
 
 import java.io.Serializable;
 
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
+import javax.validation.constraints.Min;
 
-import org.springframework.data.annotation.PersistenceConstructor;
 import org.springframework.data.annotation.Id;
+import org.springframework.data.annotation.PersistenceConstructor;
 import org.springframework.data.mongodb.core.index.IndexDirection;
 import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
-
-import javax.validation.constraints.Min;
 
 @Document(collection = "DettListini")
 public class DettListini implements Serializable {
