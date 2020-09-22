@@ -16,8 +16,8 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 
-//@DynamoDBTable(tableName = "Listini")
-@DynamoDBDocument
+@DynamoDBTable(tableName = "Listini")
+//@DynamoDBDocument
 public class Listini implements Serializable {
 	private static final long serialVersionUID = 1891268953233014092L;
 
