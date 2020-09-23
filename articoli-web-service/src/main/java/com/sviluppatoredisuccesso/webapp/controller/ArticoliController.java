@@ -75,7 +75,7 @@ public class ArticoliController<E extends Articoli, G extends ArticoliDto, ID ex
 				String authHeader = httpRequest.getHeader("Authorization");
 				dtoObject = (G) articolo.convertArticoliToDTO();
 				
-				dtoObject.setPrezzo(this.getPriceArt(id, "", authHeader));
+//				dtoObject.setPrezzo(this.getPriceArt(id, "", authHeader));
 				return new ResponseEntity<G>(dtoObject, HttpStatus.OK);
 			}
 		} else {
@@ -115,7 +115,7 @@ public class ArticoliController<E extends Articoli, G extends ArticoliDto, ID ex
 				listDto.add(dtoObject); 
 			}
 
-			searchList.forEach(f -> f.setPrezzo(this.getPriceArt(f.getId().toString(), "", authHeader)));
+//			searchList.forEach(f -> f.setPrezzo(this.getPriceArt(f.getId().toString(), "", authHeader)));
 		}
 
 		return new ResponseEntity<List<G>>(listDto, HttpStatus.OK);
