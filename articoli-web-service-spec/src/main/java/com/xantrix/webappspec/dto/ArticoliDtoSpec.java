@@ -1,8 +1,8 @@
 package com.xantrix.webappspec.dto;
 
-import com.sviluppatoredisuccesso.webapp.dto.ArticoliDto;
+import com.sviluppatoredisuccesso.webapp.dto.ArticoliDTO;
 
-public class ArticoliDtoSpec extends ArticoliDto {
+public class ArticoliDtoSpec extends ArticoliDTO {
 
 	private String nome;
 	private String redazione;

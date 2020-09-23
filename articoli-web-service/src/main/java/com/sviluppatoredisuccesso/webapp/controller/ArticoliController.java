@@ -30,7 +30,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
-import com.sviluppatoredisuccesso.webapp.dto.ArticoliDto;
+import com.sviluppatoredisuccesso.webapp.dto.ArticoliDTO;
 import com.sviluppatoredisuccesso.webapp.entities.Articoli;
 import com.sviluppatoredisuccesso.webapp.exception.BindingException;
 import com.sviluppatoredisuccesso.webapp.exception.DuplicateException;
@@ -40,12 +40,12 @@ import com.sviluppatoredisuccesso.webapp.service.ArticoliService;
 @RestController
 @CrossOrigin
 @RequestMapping("api/articoli")
-public class ArticoliController<E extends Articoli, G extends ArticoliDto, ID extends Serializable> {
+public class ArticoliController<E extends Articoli, G extends ArticoliDTO, ID extends Serializable> {
 
 	private static final Logger logger = LoggerFactory.getLogger(ArticoliController.class);
 
-	@Autowired
-	private PriceClient priceClient;
+//	@Autowired
+//	private PriceClient priceClient;
 
 	@Autowired
 	private ArticoliService<E, ID> articoliService;
@@ -72,10 +72,10 @@ public class ArticoliController<E extends Articoli, G extends ArticoliDto, ID ex
 				
 				throw new NotFoundException(errMsg);
 			} else {
-				String authHeader = httpRequest.getHeader("Authorization");
+//				String authHeader = httpRequest.getHeader("Authorization");
 				dtoObject = (G) articolo.convertArticoliToDTO();
 				
-				dtoObject.setPrezzo(this.getPriceArt(id, "", authHeader));
+//				dtoObject.setPrezzo(this.getPriceArt(id, "", authHeader));
 				return new ResponseEntity<G>(dtoObject, HttpStatus.OK);
 			}
 		} else {
@@ -106,7 +106,7 @@ public class ArticoliController<E extends Articoli, G extends ArticoliDto, ID ex
 
 			throw new NotFoundException(errMsg);
 		} else {
-			String authHeader = httpRequest.getHeader("Authorization");
+//			String authHeader = httpRequest.getHeader("Authorization");
 			
 			for(int i = 0; i < searchList.size(); i++) {
 				E articolo = searchList.get(i);
@@ -115,7 +115,7 @@ public class ArticoliController<E extends Articoli, G extends ArticoliDto, ID ex
 				listDto.add(dtoObject); 
 			}
 
-			searchList.forEach(f -> f.setPrezzo(this.getPriceArt(f.getId().toString(), "", authHeader)));
+//			searchList.forEach(f -> f.setPrezzo(this.getPriceArt(f.getId().toString(), "", authHeader)));
 		}
 
 		return new ResponseEntity<List<G>>(listDto, HttpStatus.OK);
@@ -199,18 +199,18 @@ public class ArticoliController<E extends Articoli, G extends ArticoliDto, ID ex
 		return new ResponseEntity<>(responseNode, headers, HttpStatus.OK);
 	}
 
-	private Double getPriceArt(String Id, String IdList, String Header) {
-		try {
-			Double Prezzo = (IdList.length() > 0) ? priceClient.getPriceArt(Header, Id, IdList)
-					: priceClient.getDefPriceArt(Header, Id);
-			logger.info("Prezzo Articolo " + Id + ": " + Prezzo);
-
-			return Prezzo;
-		} catch (Exception ex) {
-			logger.error("Errore ottenimento prezzo: " + ex.getMessage());
-			return 0.0;
-		}
-	}
+//	private Double getPriceArt(String Id, String IdList, String Header) {
+//		try {
+//			Double Prezzo = (IdList.length() > 0) ? priceClient.getPriceArt(Header, Id, IdList)
+//					: priceClient.getDefPriceArt(Header, Id);
+//			logger.info("Prezzo Articolo " + Id + ": " + Prezzo);
+//
+//			return Prezzo;
+//		} catch (Exception ex) {
+//			logger.error("Errore ottenimento prezzo: " + ex.getMessage());
+//			return 0.0;
+//		}
+//	}
 
 	
 	

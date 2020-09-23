@@ -8,20 +8,20 @@ server:
 spring:
   application:
     name: ProductsWebService
-    
+
     
 # ==============================================================
 # = Proprietà Fonte Dati PostgreSQL
 # ==============================================================
   datasource:
     initialization-mode: always
-    password: ${RDS_PASSWORD:Alex1993!}
+    password: ${RDS_PASSWORD:postgres}
     platform: postgres
-    url: jdbc:postgresql://${RDS_HOSTNAME:192.168.51.5}:${RDS_PORT:5433}/${RDS_DB_NAME:Alphashop}
+    url: jdbc:postgresql://${RDS_HOSTNAME:localhost}:${RDS_PORT:5433}/${RDS_DB_NAME:postgres}
     username: ${RDS_USERNAME:postgres}
   jpa:
     hibernate:
-      ddl-auto: create
+      ddl-auto: update
     properties:
       hibernate:
         dialect: org.hibernate.dialect.PostgreSQLDialect
@@ -32,5 +32,3 @@ spring:
     generate-ddl:  true
   main:
     allow-bean-definition-overriding: true
-
-
