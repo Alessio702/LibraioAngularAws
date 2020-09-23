@@ -13,7 +13,8 @@ import feign.Param;
 
 public interface ArticoliRepository<E extends Articoli> extends JpaRepository<E, Integer> 
 {
-	@Query(value = "SELECT t FROM Articoli t WHERE t.descrizione LIKE ?1%")
+	
+	@Query(value = "SELECT t FROM Articoli t WHERE t.descrizione LIKE %:filter%")
 	List<E> selectByDescription(@Param("filter") String filter);
 	
 	
