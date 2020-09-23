@@ -1,2 +1,7 @@
+#Ignore all the files conteining the extension .yml
+*.yml
+
+
+
 /.metadata/
 /.yml/
