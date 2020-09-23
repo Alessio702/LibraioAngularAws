@@ -15,10 +15,10 @@ spring:
 # ==============================================================
   datasource:
     initialization-mode: always
-    password: ${RDS_PASSWORD:Alex1993!}
+    password: jDt39ZSu
     platform: postgres
-    url: jdbc:postgresql://${RDS_HOSTNAME:192.168.51.5}:${RDS_PORT:5433}/${RDS_DB_NAME:Alphashop}
-    username: ${RDS_USERNAME:postgres}
+    url: jdbc:postgresql://teramo.digitalbusinessolution.com:5433/Torino
+    username: Ramona
   jpa:
     hibernate:
       ddl-auto: update
