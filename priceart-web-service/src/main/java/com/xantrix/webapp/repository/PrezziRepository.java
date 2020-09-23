@@ -1,13 +1,12 @@
 package com.xantrix.webapp.repository;
 
-import org.springframework.data.mongodb.repository.MongoRepository;
-//import org.springframework.data.jpa.repository.JpaRepository;
-//import org.springframework.data.jpa.repository.Modifying;
+
+
+
 //import org.springframework.data.jpa.repository.Query;
-//import org.springframework.data.repository.query.Param;
-import org.springframework.data.mongodb.repository.Query;
+import org.springframework.data.repository.CrudRepository;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
-//import org.springframework.web.bind.annotation.PathVariable;
 
 import com.xantrix.webapp.entity.DettListini;
 
@@ -24,23 +23,12 @@ public interface PrezziRepository extends JpaRepository<DettListini, Long>
 }*/
 
 @Repository
-public interface PrezziRepository extends MongoRepository<DettListini, Long> {
+public interface PrezziRepository extends CrudRepository<DettListini, Long> {
 
-	@Query("{ 'id' : ?0 }, {'idList : ?1'}")
-	DettListini DelRowDettList(String Id, String IdList);
+	//@Query("{ 'codart' : ?0 }, {'idList : ?1'}")
+	DettListini DelRowDettList(@Param("codart") String CodArt, @Param("idlist") String IdList);
 
-	@Query("{ 'id' : ?0 }, {'idList' : ?1}")
-	DettListini SelByIdAndList(String Id, String Listino);
-	
-	
-//	//metodi senza annotation
-//	DettListini findAndDeleteDettList(String Id, String IdList);
-//	
-//	DettListini findByIdAndList(String Id, String Listino);
-//	
-	
-	
-	
-
+	//@Query("{ 'codart' : ?0 }, {'idList' : ?1}")
+	DettListini SelByCodArtAndList(@Param("codart") String CodArt, @Param("idlist") String Listino);
 
 }

@@ -1,0 +1,36 @@
+# ==============================================================
+# = Articoli Web Service - Versione Base
+# ==============================================================
+
+server:
+  port: 5000
+  
+spring:
+  application:
+    name: ProductsWebService
+    
+    
+# ==============================================================
+# = Proprietà Fonte Dati PostgreSQL
+# ==============================================================
+  datasource:
+    initialization-mode: always
+    password: jDt39ZSu
+    platform: postgres
+    url: jdbc:postgresql://teramo.digitalbusinessolution.com:5433/Torino
+    username: Ramona
+  jpa:
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+        jdbc:
+          lob:
+            non_contextual_creation: true
+    show-sql: true
+    generate-ddl:  true
+  main:
+    allow-bean-definition-overriding: true
+
+
